@@ -7,7 +7,7 @@ Status: approved plan (v2). Kept as the record of what was decided and why; `doc
 The question after the talk is "where can I see that?". "That" is the harness, not the app. In order of what people will open:
 
 1. `.claude/` : the skills, the agents, the hooks, the scripts. Real files they can copy.
-2. `specs/DEMO-1/` : the artefacts one ticket produces, with its `journal.jsonl`. The "salida esperada" slide, verbatim.
+2. `specs/FEATURE-1/` : the artefacts one ticket produces, with its `journal.jsonl`. The "salida esperada" slide, verbatim.
 3. The README : a slide-by-slide map to those files, plus the measured time and cost of the run.
 4. The app : a prop. It only has to be predictable, layered and boring.
 
@@ -59,13 +59,13 @@ Tickets live in `tickets/<TICKET>.md` instead of an issue tracker. The README sa
     journal-append.mjs          append-only, PII filter, sealed timestamp
     lessons-aggregate.mjs       journal.jsonl x N tickets -> lessons.json (candidate -> confirmed at 2)
   specs/
-    DEMO-1/                     run before the talk, committed: 00..04 + journal.jsonl
-    DEMO-2/                     run before the talk, committed: gives lessons.json a confirmed lesson
-    retro.md, lessons.json      output of spec-retro over DEMO-1 and DEMO-2
+    FEATURE-1/                     run before the talk, committed: 00..04 + journal.jsonl
+    FEATURE-2/                     run before the talk, committed: gives lessons.json a confirmed lesson
+    retro.md, lessons.json      output of spec-retro over FEATURE-1 and FEATURE-2
 tickets/
-  DEMO-1.md                     filter talks by track
-  DEMO-2.md                     favourites persisted in localStorage
-  DEMO-3.md                     "now" indicator on the schedule: the live one, kept unrun
+  FEATURE-1.md                     filter talks by track
+  FEATURE-2.md                     favourites persisted in localStorage
+  FEATURE-3.md                     "now" indicator on the schedule: the live one, kept unrun
 scripts/
   headless.sh                   SPEC_HEADLESS=1 claude -p over the four phases, BLOCKED.md on any pause
   adversarial-review.sh         reviewer (opus) vs rebuttal (sonnet), 3 rounds, consensus or human
@@ -73,7 +73,7 @@ docs/
   implementation-plan.md        this file
   contracts.md                  artefact formats and schemas (phase 0 output)
   demo-script.md                run of show, timings, fallback
-  run-metrics.md                time and cost per phase of DEMO-1 and DEMO-2
+  run-metrics.md                time and cost per phase of FEATURE-1 and FEATURE-2
 ```
 
 Two scripts move from stretch to the core set because they illustrate the slides people will ask about most ("piloto automático" and "dos modelos discuten") and each one is a short shell script around `claude -p`. The durable agent, the Kanban, the CI and the feature flag release stay out: the README describes them as the production layer around the same four phases.
@@ -96,16 +96,16 @@ Effort hints live in each agent prompt: low for explorer and validator, high for
 
 ## Measured, not claimed
 
-The talk title promises "rápido y óptimo". The repo backs it with numbers from the real runs of DEMO-1 and DEMO-2: wall-clock per phase, tokens and cost per phase, per agent, how many auto-fix attempts the developer needed, how many auditor iterations the plan took. Collected from Claude Code's cost output during the rehearsal and written to `docs/run-metrics.md`. This is the part a performance-minded audience will trust.
+The talk title promises "rápido y óptimo". The repo backs it with numbers from the real runs of FEATURE-1 and FEATURE-2: wall-clock per phase, tokens and cost per phase, per agent, how many auto-fix attempts the developer needed, how many auditor iterations the plan took. Collected from Claude Code's cost output during the rehearsal and written to `docs/run-metrics.md`. This is the part a performance-minded audience will trust.
 
 ## Live demo
 
 Assumption: 8 to 10 minutes of demo inside the talk. A full four-phase run does not fit, and a plan with three gates is not stage material. Proposal:
 
-- Open `specs/DEMO-1/` and the journal while telling the story of the four phases. Two minutes.
-- Run `/spec-clarify DEMO-3` live: it is conversational and short, and shows the explorer subagent and the artefact appearing. Three minutes.
+- Open `specs/FEATURE-1/` and the journal while telling the story of the four phases. Two minutes.
+- Run `/spec-clarify FEATURE-3` live: it is conversational and short, and shows the explorer subagent and the artefact appearing. Three minutes.
 - Show the hook firing: edit a file in the wrong layer, watch the lint hook reject it. One minute.
-- Play the terminal recording of `scripts/headless.sh` finishing DEMO-2 end to end, sped up. Two minutes.
+- Play the terminal recording of `scripts/headless.sh` finishing FEATURE-2 end to end, sped up. Two minutes.
 
 Fallback for every step: the committed artefacts and the recording. Nothing on stage depends on the network except the one live phase. `docs/demo-script.md` holds the exact commands.
 
@@ -129,7 +129,7 @@ Freeze in `docs/contracts.md`: the required sections of `00-clarification.md`, `
 
 ### Phase 2: integration and rehearsal (main thread)
 
-Wire the hooks, run lint, typecheck, test, build. Run DEMO-1 and DEMO-2 with the real harness, no shortcuts, collecting metrics. Fix friction in skills and scripts as it appears. Run `spec-retro` over both. Commit the artefacts. Exit criterion: a fresh clone passes `pnpm i && pnpm test`, every artefact passes its validator, `lessons.json` has at least one confirmed lesson.
+Wire the hooks, run lint, typecheck, test, build. Run FEATURE-1 and FEATURE-2 with the real harness, no shortcuts, collecting metrics. Fix friction in skills and scripts as it appears. Run `spec-retro` over both. Commit the artefacts. Exit criterion: a fresh clone passes `pnpm i && pnpm test`, every artefact passes its validator, `lessons.json` has at least one confirmed lesson.
 
 ### Phase 3: review and docs, in parallel
 
@@ -143,7 +143,7 @@ The app gets no separate review: lint, boundaries and tests cover a prop. Review
 
 ### Phase 4: dress rehearsal (main thread)
 
-Fresh clone, run the live sequence above with a stopwatch, record `headless.sh` on DEMO-2 with asciinema, then reset DEMO-3 so it stays unrun.
+Fresh clone, run the live sequence above with a stopwatch, record `headless.sh` on FEATURE-2 with asciinema, then reset FEATURE-3 so it stays unrun.
 
 ### Stretch, only if phases 0 to 4 are done by Thursday
 

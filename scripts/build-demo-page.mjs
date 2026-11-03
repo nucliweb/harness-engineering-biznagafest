@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds docs/demo/index.html: the keyboard-driven page the speakers project to narrate the recorded DEMO-4 run.
+// Builds docs/demo/index.html: the keyboard-driven page the speakers project to narrate the recorded FEATURE-4 run.
 //
 //   node scripts/build-demo-page.mjs
 //
@@ -14,7 +14,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { renderPage } from './demo-page/render.mjs';
 import { buildSteps } from './demo-page/steps.mjs';
 
-export const TICKET = 'DEMO-4';
+export const TICKET = 'FEATURE-4';
 export const REPO_URL = 'https://github.com/nucliweb/harness-engineering-biznagafest';
 export const REPO_NAME = 'harness-engineering-biznagafest';
 export const MAX_LINE = 160;
@@ -321,13 +321,13 @@ export function loadSources(root, ticket = TICKET) {
     ticketMd: read(root, `tickets/${ticket}.md`),
     journal: parseJournal(read(root, `specs/${ticket}/journal.jsonl`)),
     sister: {
-      id: 'DEMO-1',
-      clarification: read(root, 'specs/DEMO-1/00-clarification.md'),
-      plan: read(root, 'specs/DEMO-1/03-plan.md'),
-      dod: read(root, 'specs/DEMO-1/04-dod.md'),
-      journal: parseJournal(read(root, 'specs/DEMO-1/journal.jsonl')),
+      id: 'FEATURE-1',
+      clarification: read(root, 'specs/FEATURE-1/00-clarification.md'),
+      plan: read(root, 'specs/FEATURE-1/03-plan.md'),
+      dod: read(root, 'specs/FEATURE-1/04-dod.md'),
+      journal: parseJournal(read(root, 'specs/FEATURE-1/journal.jsonl')),
     },
-    demo2: { blocked: read(root, 'specs/DEMO-2/BLOCKED.md'), plan: read(root, 'specs/DEMO-2/03-plan.md') },
+    demo2: { blocked: read(root, 'specs/FEATURE-2/BLOCKED.md'), plan: read(root, 'specs/FEATURE-2/03-plan.md') },
     metrics: parseMetrics(read(root, 'docs/run-metrics.md')),
     contracts: read(root, 'docs/contracts.md'),
     readme: read(root, 'README.md'),

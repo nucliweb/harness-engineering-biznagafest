@@ -10,10 +10,10 @@ import { appendEntry, redact } from './lib/journal.mjs';
 const here = dirname(fileURLToPath(import.meta.url));
 const script = join(here, 'journal-append.mjs');
 const tmp = () => mkdtempSync(join(tmpdir(), 'journal-'));
-const lines = (root, ticket = 'DEMO-1') =>
+const lines = (root, ticket = 'FEATURE-1') =>
   readFileSync(join(root, 'specs', ticket, 'journal.jsonl'), 'utf8').split('\n').filter(Boolean);
 
-const base = { ticket: 'DEMO-1', phase: 'implement', actor: 'developer-package', kind: 'autofix_failed', summary: 'Lint failed' };
+const base = { ticket: 'FEATURE-1', phase: 'implement', actor: 'developer-package', kind: 'autofix_failed', summary: 'Lint failed' };
 
 test('appendEntry creates the spec folder and file and writes one JSON line with a ts', () => {
   const root = tmp();
@@ -21,7 +21,7 @@ test('appendEntry creates the spec folder and file and writes one JSON line with
   const [line] = lines(root);
   const rec = JSON.parse(line);
   assert.match(rec.ts, /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/);
-  assert.equal(rec.ticket, 'DEMO-1');
+  assert.equal(rec.ticket, 'FEATURE-1');
   assert.deepEqual(rec.files, ['packages/ui/a.tsx']);
   assert.equal('detail' in rec, false);
 });
@@ -75,7 +75,7 @@ test('appendEntry keeps a multi-line summary on one journal line', () => {
 
 test('CLI appends an entry and exits 0', () => {
   const root = tmp();
-  const r = spawnSync('node', [script, '--root', root, '--ticket', 'DEMO-1', '--phase', 'implement', '--actor', 'developer-package', '--kind', 'autofix_failed', '--summary', 'Boundary rule failed', '--detail', 'x', '--files', 'a.ts,b.ts'], { encoding: 'utf8' });
+  const r = spawnSync('node', [script, '--root', root, '--ticket', 'FEATURE-1', '--phase', 'implement', '--actor', 'developer-package', '--kind', 'autofix_failed', '--summary', 'Boundary rule failed', '--detail', 'x', '--files', 'a.ts,b.ts'], { encoding: 'utf8' });
   assert.equal(r.status, 0, r.stderr);
   const rec = JSON.parse(lines(root)[0]);
   assert.deepEqual(rec.files, ['a.ts', 'b.ts']);
@@ -84,7 +84,7 @@ test('CLI appends an entry and exits 0', () => {
 
 test('CLI exits 1 with one message on an unknown kind and writes nothing', () => {
   const root = tmp();
-  const r = spawnSync('node', [script, '--root', root, '--ticket', 'DEMO-1', '--phase', 'plan', '--actor', 'main', '--kind', 'nope', '--summary', 's'], { encoding: 'utf8' });
+  const r = spawnSync('node', [script, '--root', root, '--ticket', 'FEATURE-1', '--phase', 'plan', '--actor', 'main', '--kind', 'nope', '--summary', 's'], { encoding: 'utf8' });
   assert.equal(r.status, 1);
   assert.match(r.stderr, /kind/);
   assert.equal(existsSync(join(root, 'specs')), false);

@@ -23,7 +23,7 @@ Output: `specs/lessons.json` (by script) and `specs/retro.md` (by you). Proposal
    node .claude/scripts/lessons-aggregate.mjs
    ```
 2. Read `specs/lessons.json`.
-3. Read each selected journal with line numbers (`cat -n specs/<TICKET>/journal.jsonl`). A citation is `<TICKET>#<line>`, 1-based: `DEMO-1#3` is the third line of DEMO-1's journal.
+3. Read each selected journal with line numbers (`cat -n specs/<TICKET>/journal.jsonl`). A citation is `<TICKET>#<line>`, 1-based: `FEATURE-1#3` is the third line of FEATURE-1's journal.
 4. Write `specs/retro.md` (overwrite; git keeps earlier versions):
    ```
    # Retro · <TICKET, TICKET>

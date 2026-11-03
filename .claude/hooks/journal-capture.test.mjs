@@ -24,7 +24,7 @@ const journal = (root, ticket) => {
 const stop = (message, extra = {}) => ({ hook_event_name: 'SubagentStop', stop_hook_active: false, agent_type: 'developer-package', last_assistant_message: message, ...extra });
 
 const VALID = [
-  'Done with core. Notes in specs/DEMO-1/03-plan.md.',
+  'Done with core. Notes in specs/FEATURE-1/03-plan.md.',
   '',
   'JOURNAL',
   '- kind: autofix_failed',
@@ -63,7 +63,7 @@ test('valid block: appends every entry with actor, derived phase, and ticket fro
   const r = run(stop(VALID));
   assert.equal(r.status, 0, r.stderr);
   assert.equal(r.stdout, '');
-  const entries = journal(r.root, 'DEMO-1');
+  const entries = journal(r.root, 'FEATURE-1');
   assert.equal(entries.length, 2);
   assert.equal(entries[0].actor, 'developer-package');
   assert.equal(entries[0].phase, 'implement');
@@ -75,8 +75,8 @@ test('phase is derived from the agent', () => {
   const cases = { 'plan-auditor': 'plan', explorer: 'plan', 'reviewer-package': 'implement', 'validator-global': 'validate', 'design-qa': 'validate' };
   for (const [agent, phase] of Object.entries(cases)) {
     const r = run(stop(VALID, { agent_type: agent }));
-    assert.equal(journal(r.root, 'DEMO-1')[0].phase, phase, agent);
-    assert.equal(journal(r.root, 'DEMO-1')[0].actor, agent);
+    assert.equal(journal(r.root, 'FEATURE-1')[0].phase, phase, agent);
+    assert.equal(journal(r.root, 'FEATURE-1')[0].actor, agent);
   }
 });
 
@@ -94,7 +94,7 @@ test('entries without a ticket go to _unassigned', () => {
 });
 
 test('the first specs/<TICKET>/ path wins, lowercase ids are not tickets', () => {
-  const r = run(stop('see specs/foo-1/x.md and specs/ABC-12/y.md then specs/DEMO-1/z.md\nJOURNAL\n- kind: deviation\n  summary: S\nEND JOURNAL'));
+  const r = run(stop('see specs/foo-1/x.md and specs/ABC-12/y.md then specs/FEATURE-1/z.md\nJOURNAL\n- kind: deviation\n  summary: S\nEND JOURNAL'));
   assert.equal(journal(r.root, 'ABC-12').length, 1);
 });
 
@@ -106,10 +106,10 @@ test('missing block and stop_hook_active false: blocks with the exact reason, wr
 });
 
 test('missing block and stop_hook_active true: lets the agent stop and journals a deviation', () => {
-  const r = run(stop('Still no block, see specs/DEMO-2/03-plan.md', { stop_hook_active: true }));
+  const r = run(stop('Still no block, see specs/FEATURE-2/03-plan.md', { stop_hook_active: true }));
   assert.equal(r.status, 0);
   assert.equal(r.stdout, '');
-  const [e] = journal(r.root, 'DEMO-2');
+  const [e] = journal(r.root, 'FEATURE-2');
   assert.equal(e.kind, 'deviation');
   assert.equal(e.summary, 'Subagent report ended without a JOURNAL block');
   assert.equal(e.actor, 'developer-package');
@@ -132,12 +132,12 @@ test('never crashes on malformed input', () => {
 });
 
 test('PII in an entry is redacted before it reaches the journal', () => {
-  const r = run(stop('specs/DEMO-1/x.md\nJOURNAL\n- kind: deviation\n  summary: Mailed person@example.com\nEND JOURNAL'));
-  assert.equal(journal(r.root, 'DEMO-1')[0].summary, 'Mailed [redacted]');
+  const r = run(stop('specs/FEATURE-1/x.md\nJOURNAL\n- kind: deviation\n  summary: Mailed person@example.com\nEND JOURNAL'));
+  assert.equal(journal(r.root, 'FEATURE-1')[0].summary, 'Mailed [redacted]');
 });
 
 test('a block without END JOURNAL is invalid and gets the block response', () => {
-  const msg = 'specs/DEMO-1/x.md\nJOURNAL\n- kind: deviation\n  summary: S';
+  const msg = 'specs/FEATURE-1/x.md\nJOURNAL\n- kind: deviation\n  summary: S';
   assert.equal(parseJournalBlock(msg).status, 'invalid');
   const r = run(stop(msg));
   assert.equal(JSON.parse(r.stdout).decision, 'block');
@@ -145,7 +145,7 @@ test('a block without END JOURNAL is invalid and gets the block response', () =>
 });
 
 test('text after END JOURNAL is invalid and gets the block response', () => {
-  const msg = 'specs/DEMO-1/x.md\nJOURNAL\n- kind: deviation\n  summary: S\nEND JOURNAL\nOne more thing.';
+  const msg = 'specs/FEATURE-1/x.md\nJOURNAL\n- kind: deviation\n  summary: S\nEND JOURNAL\nOne more thing.';
   assert.equal(parseJournalBlock(msg).status, 'invalid');
   const r = run(stop(msg));
   assert.equal(JSON.parse(r.stdout).decision, 'block');

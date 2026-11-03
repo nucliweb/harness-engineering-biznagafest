@@ -14,7 +14,7 @@ const fmtClock = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padS
 const cut = (text, n) => (Array.from(text).length > n ? `${Array.from(text).slice(0, n - 1).join('')}…` : text);
 const fAttr = (ks) => (ks.length ? ` data-f="${ks.join(' ')}"` : '');
 
-/** Escapes text and keeps ticket ids such as DEMO-4 from breaking at the hyphen. */
+/** Escapes text and keeps ticket ids such as FEATURE-4 from breaking at the hyphen. */
 const escNoBreak = (text) => esc(text).replace(/\b([A-Z]+-\d+)\b/g, '<span class="nw">$1</span>');
 
 /**
@@ -184,7 +184,7 @@ function numbersStage(step) {
   const { run, agents, compare } = step.stage;
   const fmtMin = (s) => `${Math.floor(s / 60)} min ${Math.round(s % 60)} s`;
   return `<div class="stage stack scroller">
-<section class="panel item"${itemAttr(step, 'run')}><p class="panel-head">${tx(t('ui.finalRun', { ticket: 'DEMO-4' }))} · ${esc(run.source)}</p><div class="item-body">${table(run, run.total)}</div></section>
+<section class="panel item"${itemAttr(step, 'run')}><p class="panel-head">${tx(t('ui.finalRun', { ticket: 'FEATURE-4' }))} · ${esc(run.source)}</p><div class="item-body">${table(run, run.total)}</div></section>
 <section class="panel item"${itemAttr(step, 'agents')}><p class="panel-head">${tx(t('ui.agents'))} · ${esc(agents.source)}</p><div class="item-body">${table(agents)}</div></section>
 <section class="panel item"${itemAttr(step, 'compare')}><p class="panel-head">${tx(t('ui.fourPhases'))} · ${esc(compare.source)}</p><div class="item-body compare">${compare.tickets
     .map((c) => `<div><b>${esc(c.cost.toFixed(2))} USD</b><span>${esc(c.id)} · ${esc(c.main)}</span><span>${esc(fmtMin(c.seconds))}</span></div>`)

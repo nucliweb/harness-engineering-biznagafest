@@ -6,7 +6,7 @@ Facts checked against the official docs at code.claude.com/docs on 2026-11-03 fo
 
 Frontmatter fields: `name` (defaults to the directory), `description`, `when_to_use`, `argument-hint`, `arguments`, `disable-model-invocation`, `user-invocable`, `allowed-tools`, `disallowed-tools`, `model`, `effort`, `context` (`fork`), `agent`, `background`, `hooks`, `paths`. Unknown fields are ignored silently, so spelling matters.
 
-Arguments: `/spec-clarify DEMO-1` exposes `$ARGUMENTS`, `$0` and `$ARGUMENTS[0]`, all equal to `DEMO-1`. If the body uses no placeholder, Claude Code appends `ARGUMENTS: DEMO-1` to the content.
+Arguments: `/spec-clarify FEATURE-1` exposes `$ARGUMENTS`, `$0` and `$ARGUMENTS[0]`, all equal to `FEATURE-1`. If the body uses no placeholder, Claude Code appends `ARGUMENTS: FEATURE-1` to the content.
 
 `disallowed-tools: AskUserQuestion` removes the question tool while the skill runs. `context: fork` plus `agent: <name>` runs the skill body as a prompt inside that subagent, without the conversation history.
 
@@ -58,7 +58,7 @@ Use `last_assistant_message` for the final text. To keep the subagent running, e
 
 ## Headless (`claude -p`)
 
-- A skill invocation is just the prompt: `claude -p "/spec-clarify DEMO-1"`.
+- A skill invocation is just the prompt: `claude -p "/spec-clarify FEATURE-1"`.
 - `--output-format json` returns `result`, `session_id`, `duration_ms`, `duration_api_ms`, `num_turns`, `total_cost_usd`, `usage` (top-level agent only), `modelUsage` (per model, includes subagents: `costUSD`, `inputTokens`, `outputTokens`, `cacheReadInputTokens`, `cacheCreationInputTokens`), `is_error`, `subtype` (`success`, `error_max_turns`, `error_max_budget_usd`, ...). Costs are client-side estimates at list price.
 - `--model sonnet|opus|haiku|fable|<full id>`, `--effort low|medium|high|xhigh|max`.
 - `--permission-mode acceptEdits|dontAsk|bypassPermissions|...`, `--permission-prompts none` removes the tools that need a person (`AskUserQuestion`) and denies anything that would prompt.

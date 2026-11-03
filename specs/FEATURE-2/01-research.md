@@ -1,4 +1,4 @@
-# DEMO-2 · Research
+# FEATURE-2 · Research
 
 ## Inventory
 

@@ -6,9 +6,9 @@ A runnable example of a spec-driven Claude Code harness: four commands, subagent
 
 Este repo es el ejemplo público de la charla "Harness Engineering" de BiznagaFest 2026. No es una app que copiar; es el entorno que rodea a una app. La app (una agenda de congreso ficticia, en tres capas) es solo el pretexto para que el agente tenga algo que construir.
 
-Aquí vais a encontrar los skills, agentes, hooks y scripts reales en `.claude/`, los artefactos que produce un ticket completo en `specs/DEMO-1/` con su journal, y el tiempo y coste medidos de cada fase en `docs/run-metrics.md`.
+Aquí vais a encontrar los skills, agentes, hooks y scripts reales en `.claude/`, los artefactos que produce un ticket completo en `specs/FEATURE-1/` con su journal, y el tiempo y coste medidos de cada fase en `docs/run-metrics.md`.
 
-Por dónde empezar: abrid `specs/DEMO-1/` para ver la "salida esperada", después `.claude/` para ver cómo se genera, y `docs/slides-to-repo.md` para ir diapositiva por diapositiva a los ficheros. Si queréis probarlo, el quick start de abajo os guía; necesitáis Claude Code, Node 24 y pnpm. El resto del README está en inglés.
+Por dónde empezar: abrid `specs/FEATURE-1/` para ver la "salida esperada", después `.claude/` para ver cómo se genera, y `docs/slides-to-repo.md` para ir diapositiva por diapositiva a los ficheros. Si queréis probarlo, el quick start de abajo os guía; necesitáis Claude Code, Node 24 y pnpm. El resto del README está en inglés.
 
 ## What this is
 
@@ -38,26 +38,26 @@ pnpm dev
 
 `pnpm test` runs Vitest for the three packages, then `node --test` for the hooks, validators and runner scripts. `pnpm dev` serves the agenda at the URL Vite prints.
 
-Open Claude Code in the repo and run the four phases on a fresh ticket. `DEMO-4` has no artefacts yet.
+Open Claude Code in the repo and run the four phases on a fresh ticket. `FEATURE-4` (a feature) and `FIX-1` (a real defect: the tab title never changes) have no artefacts yet; pick either.
 
 ```text
-/spec-clarify DEMO-4
-/spec-plan DEMO-4
-/spec-implement DEMO-4
-/spec-validate DEMO-4
+/spec-clarify FEATURE-4
+/spec-plan FEATURE-4
+/spec-implement FEATURE-4
+/spec-validate FEATURE-4
 ```
 
 | Command | What you see |
 |---|---|
-| `/spec-clarify DEMO-4` | A short conversation with questions that cite real code. The explorer subagent searches in its own context and `specs/DEMO-3/00-clarification.md` appears once its validator passes. |
-| `/spec-plan DEMO-4` | Research, design and plan files, with three pauses: you approve the design (Gate A), see the scope verdict (Gate B) and the audit result (Gate C). |
-| `/spec-implement DEMO-4` | A developer and a reviewer per package, in series, with checkboxes in `03-plan.md` turning from `[ ]` to `[x]`. The lint hook reports an edit in the wrong layer on the same tool call. |
-| `/spec-validate DEMO-4` | Lint, typecheck, test and build results in `04-dod.md` with a `GREEN`, `RED` or `GREEN WITH SUPPRESSIONS` verdict. |
+| `/spec-clarify FEATURE-4` | A short conversation with questions that cite real code. The explorer subagent searches in its own context and `specs/FEATURE-3/00-clarification.md` appears once its validator passes. |
+| `/spec-plan FEATURE-4` | Research, design and plan files, with three pauses: you approve the design (Gate A), see the scope verdict (Gate B) and the audit result (Gate C). |
+| `/spec-implement FEATURE-4` | A developer and a reviewer per package, in series, with checkboxes in `03-plan.md` turning from `[ ]` to `[x]`. The lint hook reports an edit in the wrong layer on the same tool call. |
+| `/spec-validate FEATURE-4` | Lint, typecheck, test and build results in `04-dod.md` with a `GREEN`, `RED` or `GREEN WITH SUPPRESSIONS` verdict. |
 
-For the unattended version, reset `DEMO-4` first (delete `specs/DEMO-4/` and revert its code), then run:
+For the unattended version, reset `FEATURE-4` first (delete `specs/FEATURE-4/` and revert its code), then run:
 
 ```bash
-scripts/headless.sh DEMO-4
+scripts/headless.sh FEATURE-4
 ```
 
 It prints one line per phase to stderr and appends a row of time and cost per phase to `docs/run-metrics.md`. After two or more tickets have a journal, run `/spec-retro` to see `specs/retro.md` and `specs/lessons.json` written from them.
@@ -69,11 +69,11 @@ apps/agenda/                  React + Vite app: pages, routing, storage, composi
 packages/ui/                  Presentational components and CSS tokens, imports core only
 packages/core/                Domain types and pure functions, imports nothing
   (each package has a CLAUDE.md with its conventions)
-tickets/                      DEMO-1 to DEMO-4 as markdown files
+tickets/                      FEATURE-1 to FEATURE-4 and FIX-1 as markdown files
 specs/                        What a ticket produces: specs/<TICKET>/00..05, journal.jsonl
-  DEMO-1/                     A complete run: four artefacts and the journal
-  DEMO-2/                     A run stopped at Gate B: Split verdict and BLOCKED.md
-  DEMO-3/                     A second complete run, recorded in docs/recordings/
+  FEATURE-1/                     A complete run: four artefacts and the journal
+  FEATURE-2/                     A run stopped at Gate B: Split verdict and BLOCKED.md
+  FEATURE-3/                     A second complete run, recorded in docs/recordings/
   lessons.json, retro.md      Cross-ticket output of /spec-retro
 .claude/
   settings.json               Wires the two hooks
@@ -108,7 +108,7 @@ Gate B is deliberately strict so it is visible in a demo: more than 15 files, mo
 
 ### Journal and lessons loop
 
-`specs/<TICKET>/journal.jsonl` records what failed, deviated from the plan or was decided by a person. Things that went green first time are not recorded. Only `journal-append.mjs` writes it: it sets the timestamp, validates `phase`, `actor` and `kind`, redacts emails and token-like strings, and only appends. `/spec-retro` runs `lessons-aggregate.mjs`, which groups entries by layer and summary across tickets. A lesson is `candidate` when seen in one ticket, `confirmed` in two or more, and `applied` once a person has changed the harness because of it. `/spec-plan` loads only `confirmed` and `applied` lessons for the layers a ticket touches, and `retro.md` cites every claim as `DEMO-1#3` (ticket and journal line).
+`specs/<TICKET>/journal.jsonl` records what failed, deviated from the plan or was decided by a person. Things that went green first time are not recorded. Only `journal-append.mjs` writes it: it sets the timestamp, validates `phase`, `actor` and `kind`, redacts emails and token-like strings, and only appends. `/spec-retro` runs `lessons-aggregate.mjs`, which groups entries by layer and summary across tickets. A lesson is `candidate` when seen in one ticket, `confirmed` in two or more, and `applied` once a person has changed the harness because of it. `/spec-plan` loads only `confirmed` and `applied` lessons for the layers a ticket touches, and `retro.md` cites every claim as `FEATURE-1#3` (ticket and journal line).
 
 ### Hooks and validators
 
@@ -133,11 +133,11 @@ All of them are Node scripts with no dependency beyond built-ins, a test file ne
 | validator-global | haiku | Read, Write, Bash | low | Runs the root scripts and the validators, writes `04-dod.md` | Fix anything | Haiku 5.5: $0.10 / $0.50 |
 | design-qa | sonnet | Read, Write, Bash (Playwright CLI) | medium | Screenshots per viewport, compares with `02-design.md` | Edit code | Sonnet 5.5: $2 / $10 |
 
-The main thread (the `spec-*` skills) inherits the session model in interactive use; the DEMO-1 run used Fable 5.1 ($10 / $50). The headless runner sets `--model opus` by default, which the measured runs justify (see below); `CLAUDE_FLAGS` overrides it. A different model reviews than the one that wrote, so the reviewer does not share the developer's blind spots. Prices are list prices; Claude Code's cost output is a client-side estimate at those prices.
+The main thread (the `spec-*` skills) inherits the session model in interactive use; the FEATURE-1 run used Fable 5.1 ($10 / $50). The headless runner sets `--model opus` by default, which the measured runs justify (see below); `CLAUDE_FLAGS` overrides it. A different model reviews than the one that wrote, so the reviewer does not share the developer's blind spots. Prices are list prices; Claude Code's cost output is a client-side estimate at those prices.
 
 ## Measured, not claimed
 
-`docs/run-metrics.md` holds wall-clock time, turns, cost and tokens per model for every phase, copied from the usage fields of `claude -p --output-format json`, never estimated. The DEMO-1 run (headless, filter talks by track) took these values:
+`docs/run-metrics.md` holds wall-clock time, turns, cost and tokens per model for every phase, copied from the usage fields of `claude -p --output-format json`, never estimated. The FEATURE-1 run (headless, filter talks by track) took these values:
 
 | Phase | Duration | Cost (USD) | Models |
 |---|---|---|---|
@@ -151,11 +151,11 @@ The plan-auditor raised six findings over three iterations and ended at `Blockin
 
 The first validate pass blocked. The permission system denied `pnpm lint`, `typecheck`, `test` and `build` in headless mode, so the validator wrote no `04-dod.md`. The harness recorded it three ways: the validator's `blocked` journal entry, a `decision` entry by the runner, and a `BLOCKED.md` with reason `SETUP_ERROR`. The validator prompt was fixed and the phase re-run, and both attempts are rows in the file. Design QA was skipped in headless mode for the same class of reason: it needs a dev server and a browser.
 
-DEMO-2 (favourites in localStorage) ran with the main thread on Opus 5.5 and stopped at Gate B: 22 files, 460 lines and 5 new exports against thresholds of 10, 300 and 3. The plan proposes three smaller tickets, the runner wrote `BLOCKED.md` with `NEEDS_DECISION` and exited 4. Clarify and plan cost 0.80 and 1.63 USD. `specs/DEMO-2/` is committed as it stopped, because a ticket too big for one PR is part of the story.
+FEATURE-2 (favourites in localStorage) ran with the main thread on Opus 5.5 and stopped at Gate B: 22 files, 460 lines and 5 new exports against thresholds of 10, 300 and 3. The plan proposes three smaller tickets, the runner wrote `BLOCKED.md` with `NEEDS_DECISION` and exited 4. Clarify and plan cost 0.80 and 1.63 USD. `specs/FEATURE-2/` is committed as it stopped, because a ticket too big for one PR is part of the story.
 
-DEMO-1 also shows the gate being gamed. Its first layout touched 11 files; the headless run dropped the filter's CSS module to land on 10 and journaled it as a decision. The gate held, the model optimised for it. The answer was deterministic, not another prompt line: `validate-plan.mjs` recounts files from the steps and rejects a table or verdict that disagrees, and the contracts define what counts as a file and as an exported symbol. Two journal lines from DEMO-1's validate phase also predate a rule change: design QA tried to run headless before the skill made it interactive-only. The journal is append-only, so they stay.
+FEATURE-1 also shows the gate being gamed. Its first layout touched 11 files; the headless run dropped the filter's CSS module to land on 10 and journaled it as a decision. The gate held, the model optimised for it. The answer was deterministic, not another prompt line: `validate-plan.mjs` recounts files from the steps and rejects a table or verdict that disagrees, and the contracts define what counts as a file and as an exported symbol. Two journal lines from FEATURE-1's validate phase also predate a rule change: design QA tried to run headless before the skill made it interactive-only. The journal is append-only, so they stay.
 
-DEMO-3 ("now" indicator) stopped at Gate B on its first attempt too: 12 files against 10, with an honest count this time (every function has a test file, so a three-layer feature is 11 to 13 files). That was the gate being too tight for this repo's conventions, not the ticket being too big, so a person moved the file threshold to 15, journaled the decision in `specs/DEMO-3/journal.jsonl`, and re-ran the ticket from clarify. DEMO-2 at 22 files still splits. The second attempt split again, on lines this time (340 against 300, an honest count that includes test files, blank lines and re-indented lines), so the line threshold moved to 500 with the same reasoning. The third attempt was cut short by the Claude usage limit, and the runner recorded that as a `SETUP_ERROR` block too. The fourth attempt is the complete run, headless on Opus 5.5:
+FEATURE-3 ("now" indicator) stopped at Gate B on its first attempt too: 12 files against 10, with an honest count this time (every function has a test file, so a three-layer feature is 11 to 13 files). That was the gate being too tight for this repo's conventions, not the ticket being too big, so a person moved the file threshold to 15, journaled the decision in `specs/FEATURE-3/journal.jsonl`, and re-ran the ticket from clarify. FEATURE-2 at 22 files still splits. The second attempt split again, on lines this time (340 against 300, an honest count that includes test files, blank lines and re-indented lines), so the line threshold moved to 500 with the same reasoning. The third attempt was cut short by the Claude usage limit, and the runner recorded that as a `SETUP_ERROR` block too. The fourth attempt is the complete run, headless on Opus 5.5:
 
 | Phase | Duration | Cost (USD) | Models |
 |---|---|---|---|
@@ -165,9 +165,9 @@ DEMO-3 ("now" indicator) stopped at Gate B on its first attempt too: 12 files ag
 | validate (blocked, `SETUP_ERROR`) | 30.4 s | 0.36 | Opus 5.5, Haiku 5.5 |
 | validate (re-run, `GREEN`) | 67.0 s | 0.11 | Opus 5.5, Haiku 5.5 |
 
-The plan passed the audit in one iteration, the reviewer left two notes and no blocker, and `04-dod.md` is `GREEN` with 96 Vitest tests. The validate block was the allowlist again: it covered `pnpm lint`, `typecheck`, `test` and `build` but not `pnpm --version`, which is the validator's setup check. Every attempt and every stop is in `specs/DEMO-3/journal.jsonl`, in order, because the journal is never edited.
+The plan passed the audit in one iteration, the reviewer left two notes and no blocker, and `04-dod.md` is `GREEN` with 96 Vitest tests. The validate block was the allowlist again: it covered `pnpm lint`, `typecheck`, `test` and `build` but not `pnpm --version`, which is the validator's setup check. Every attempt and every stop is in `specs/FEATURE-3/journal.jsonl`, in order, because the journal is never edited.
 
-DEMO-4 (filter by room) is the recorded run, `docs/recordings/headless-demo-4.cast`, made on the committed tree and then reset so the ticket stays available to try. Its first attempt split on the symbol count: with types counted, two functions, one component and its props type are 4 against a threshold of 3, which would have split DEMO-1 too. The threshold moved to 6, the third and last calibration. Its second attempt ended `RED`: the validator ran `pnpm test` and one runner test failed because it inherited the run's own `CLAUDE_FLAGS`; a test isolation bug, fixed, and the harness did what it should, a `RED` verdict and a stop instead of a green stamp. The third attempt is the recording:
+FEATURE-4 (filter by room) is the recorded run, `docs/recordings/headless-feature-4.cast`, made on the committed tree and then reset so the ticket stays available to try. Its first attempt split on the symbol count: with types counted, two functions, one component and its props type are 4 against a threshold of 3, which would have split FEATURE-1 too. The threshold moved to 6, the third and last calibration. Its second attempt ended `RED`: the validator ran `pnpm test` and one runner test failed because it inherited the run's own `CLAUDE_FLAGS`; a test isolation bug, fixed, and the harness did what it should, a `RED` verdict and a stop instead of a green stamp. The third attempt is the recording:
 
 | Phase | Duration | Cost (USD) | Models |
 |---|---|---|---|
@@ -176,13 +176,13 @@ DEMO-4 (filter by room) is the recorded run, `docs/recordings/headless-demo-4.ca
 | implement | 478.9 s | 2.49 | Opus 5.5, Sonnet 5.5 |
 | validate | 63.3 s | 0.36 | Opus 5.5, Haiku 5.5 |
 
-Seventeen minutes and 6.00 USD from ticket to `GREEN`, with 10 steps across the three layers, 12 subagent runs, 12 validator calls and 6 tool errors the agents recovered from. The run is shown step by step in `docs/demo/index.html`, a single page generated from the recording, the artefacts, the journal and the metrics by `node scripts/build-demo-page.mjs`: nine screens, the lines that matter framed, one narration card per frame, texts in Spanish and English (`l` toggles), keyboard driven, no network, with the repo QR on the closing screen. Everything, attempts included, is in `specs/DEMO-4/journal.jsonl`; the artefacts and the code were reset so the ticket is clean for the next person.
+Seventeen minutes and 6.00 USD from ticket to `GREEN`, with 10 steps across the three layers, 12 subagent runs, 12 validator calls and 6 tool errors the agents recovered from. The run is shown step by step in `docs/demo/index.html`, a single page generated from the recording, the artefacts, the journal and the metrics by `node scripts/build-demo-page.mjs`: nine screens, the lines that matter framed, one narration card per frame, texts in Spanish and English (`l` toggles), keyboard driven, no network, with the repo QR on the closing screen. Everything, attempts included, is in `specs/FEATURE-4/journal.jsonl`; the artefacts and the code were reset so the ticket is clean for the next person.
 
-Same harness, two main-thread models: DEMO-1 on Fable 5.1 cost 11.74 USD for its four successful phases; DEMO-3 and DEMO-4 on Opus 5.5 cost 5.52 and 6.00 USD for the same four, with the subagents on the same models in all three.
+Same harness, two main-thread models: FEATURE-1 on Fable 5.1 cost 11.74 USD for its four successful phases; FEATURE-3 and FEATURE-4 on Opus 5.5 cost 5.52 and 6.00 USD for the same four, with the subagents on the same models in all three.
 
 ## Autopilot and adversarial review
 
-`scripts/headless.sh <TICKET>` exports `SPEC_HEADLESS=1` and runs the four skills in series through `claude -p`, with the main thread on Opus 5.5 unless `CLAUDE_FLAGS` says otherwise. Where a phase would ask a person, it takes the conservative option and journals a `decision` with actor `headless`. It streams one line per tool call and subagent to the terminal (`▶ Agent explorer`, `✓ Write specs/DEMO-3/00-clarification.md`), appends time and cost per phase to `docs/run-metrics.md`, and stops at the first block. After each phase it runs that phase's validator itself, so a phase that ends in prose instead of an artefact is a block, not a success. It refuses to start on a dirty `apps/` or `packages/` tree unless `HEADLESS_ALLOW_DIRTY=1`.
+`scripts/headless.sh <TICKET>` exports `SPEC_HEADLESS=1` and runs the four skills in series through `claude -p`, with the main thread on Opus 5.5 unless `CLAUDE_FLAGS` says otherwise. Where a phase would ask a person, it takes the conservative option and journals a `decision` with actor `headless`. It streams one line per tool call and subagent to the terminal (`▶ Agent explorer`, `✓ Write specs/FEATURE-3/00-clarification.md`), appends time and cost per phase to `docs/run-metrics.md`, and stops at the first block. After each phase it runs that phase's validator itself, so a phase that ends in prose instead of an artefact is a block, not a success. It refuses to start on a dirty `apps/` or `packages/` tree unless `HEADLESS_ALLOW_DIRTY=1`.
 
 | Exit code | Meaning |
 |---|---|

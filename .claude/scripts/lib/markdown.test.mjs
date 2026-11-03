@@ -10,7 +10,7 @@ import {
 } from './markdown.mjs';
 
 const DOC = [
-  '# DEMO-1 · Clarification',
+  '# FEATURE-1 · Clarification',
   '',
   'intro',
   '',
@@ -30,7 +30,7 @@ const DOC = [
 ].join('\n');
 
 test('readTitle returns the level-1 heading', () => {
-  assert.equal(readTitle(DOC), 'DEMO-1 · Clarification');
+  assert.equal(readTitle(DOC), 'FEATURE-1 · Clarification');
   assert.equal(readTitle('no title'), null);
 });
 

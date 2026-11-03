@@ -1,4 +1,4 @@
-# DEMO-3 · Plan
+# FEATURE-3 · Plan
 
 ## Scope check
 

@@ -7,7 +7,7 @@ Node ESM, built-ins only, no install needed. Failures print one line each as `<f
 | `validate-clarification.mjs` | `node validate-clarification.mjs <path>...` | 0 valid, 1 any failure |
 | `validate-design.mjs` | `node validate-design.mjs <path>...` | 0 valid, 1 any failure |
 | `validate-plan.mjs` | `node validate-plan.mjs <path>...` | 0 valid, 1 any failure |
-| `journal-append.mjs` | `node journal-append.mjs --ticket DEMO-1 --phase <phase> --actor <actor> --kind <kind> --summary "..." [--detail "..."] [--files a,b]` | 0 appended, 1 invalid input (nothing written) |
+| `journal-append.mjs` | `node journal-append.mjs --ticket FEATURE-1 --phase <phase> --actor <actor> --kind <kind> --summary "..." [--detail "..."] [--files a,b]` | 0 appended, 1 invalid input (nothing written) |
 | `lessons-aggregate.mjs` | `node lessons-aggregate.mjs` | 0 wrote `specs/lessons.json`, 1 error |
 
 ## Notes

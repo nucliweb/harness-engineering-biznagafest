@@ -32,4 +32,4 @@ Read only the file you need. If `$ARGUMENTS` names a topic, open the matching fi
 | `references/auditor-families.md` | Plan-auditor families F0 to F12, blocking rules, examples | Reading or fixing plan-auditor findings |
 | `references/headless.md` | `SPEC_HEADLESS=1`, conservative defaults, `BLOCKED.md` | Running through `scripts/headless.sh` |
 | `references/agents-and-models.md` | The six agents, their model, effort, tools, and why | Choosing who does what, or explaining cost |
-| `references/demo-flow.md` | How DEMO-1, DEMO-2 and DEMO-3 are used in the talk | Preparing or giving the demo |
+| `references/demo-flow.md` | How FEATURE-1, FEATURE-2 and FEATURE-3 are used in the talk | Preparing or giving the demo |

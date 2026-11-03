@@ -85,7 +85,7 @@ test('a plan file fails the clarification validator on the title rule only', () 
 test('a title with a lowercase ticket id fails the title rule', () => {
   const dir = mkdtempSync(join(tmpdir(), 'title-'));
   const file = join(dir, 'c.md');
-  writeFileSync(file, readFileSync(join(here, 'fixtures/clarification/valid.md'), 'utf8').replace('# DEMO-1', '# demo-1'));
+  writeFileSync(file, readFileSync(join(here, 'fixtures/clarification/valid.md'), 'utf8').replace('# FEATURE-1', '# demo-1'));
   const r = spawnSync('node', [join(here, 'validate-clarification.mjs'), file], { encoding: 'utf8' });
   assert.equal(r.status, 1);
   assert.match(r.stdout, /: title: /);

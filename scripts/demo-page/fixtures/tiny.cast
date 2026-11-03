@@ -1,9 +1,9 @@
-{"version":3,"term":{"cols":80,"rows":24},"timestamp":1000,"command":"bash scripts/headless.sh DEMO-9"}
-[0.5, "o", "headless: DEMO-9 spec-clarify\r\n"]
-[1.0, "o", "▶ Read tickets/DEMO-9.md\r\n"]
-[0.25, "o", "  ✓ 1 --- 2 id: DEMO-9\r\n▶ Agent explorer\r\n"]
+{"version":3,"term":{"cols":80,"rows":24},"timestamp":1000,"command":"bash scripts/headless.sh FEATURE-9"}
+[0.5, "o", "headless: FEATURE-9 spec-clarify\r\n"]
+[1.0, "o", "▶ Read tickets/FEATURE-9.md\r\n"]
+[0.25, "o", "  ✓ 1 --- 2 id: FEATURE-9\r\n▶ Agent explorer\r\n"]
 [0.25, "o", "▶ Bash node .claude/scripts/vali"]
-[0.5, "o", "date-clarification.mjs specs/DEMO-9/00-clarification.md\r\n  ✗ Exit code 1\r\n"]
+[0.5, "o", "date-clarification.mjs specs/FEATURE-9/00-clarification.md\r\n  ✗ Exit code 1\r\n"]
 [0.1, "o", "  · Done.\r\n■ success turns=3 cost=$0.1234 time=2.6s\r\n"]
-[0.1, "o", "headless: DEMO-9 spec-plan\r\n▶ Write specs/DEMO-9/03-plan.md\r\n▶ Edit specs/DEMO-9/03-plan.md\r\n▶ Grep foo\r\n▶ Glob bar/**\r\n▶ Skill\r\n■ success turns=1 cost=$0.0100 time=1.0s\r\nheadless: DEMO-9 done, metrics in docs/run-metrics.md\r\n"]
+[0.1, "o", "headless: FEATURE-9 spec-plan\r\n▶ Write specs/FEATURE-9/03-plan.md\r\n▶ Edit specs/FEATURE-9/03-plan.md\r\n▶ Grep foo\r\n▶ Glob bar/**\r\n▶ Skill\r\n■ success turns=1 cost=$0.0100 time=1.0s\r\nheadless: FEATURE-9 done, metrics in docs/run-metrics.md\r\n"]
 [0.01, "x", "0"]

@@ -1,4 +1,4 @@
-# DEMO-1 · Clarification
+# FEATURE-1 · Clarification
 
 ## Scope
 - Add a track filter to the schedule page

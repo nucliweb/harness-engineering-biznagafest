@@ -1,5 +1,5 @@
 ---
-id: DEMO-3
+id: FEATURE-3
 title: "Now" indicator on the schedule
 type: feature
 ---

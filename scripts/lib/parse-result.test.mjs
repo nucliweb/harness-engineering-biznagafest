@@ -57,12 +57,12 @@ test('parseResult reports unparsable output as not ok', () => {
 });
 
 test('metricsRow renders a markdown row with per-model tokens', () => {
-  const row = metricsRow('DEMO-1', 'spec-clarify', parseResult(JSON.stringify(OK)));
-  assert.equal(row, '| DEMO-1 | spec-clarify | success | 12345 | 7 | 0.1234 | claude-opus-5-5 100/50; claude-haiku-5 10/5 | 1020 | 203 |');
+  const row = metricsRow('FEATURE-1', 'spec-clarify', parseResult(JSON.stringify(OK)));
+  assert.equal(row, '| FEATURE-1 | spec-clarify | success | 12345 | 7 | 0.1234 | claude-opus-5-5 100/50; claude-haiku-5 10/5 | 1020 | 203 |');
 });
 
 test('metricsRow uses dashes when the output was unparsable', () => {
-  assert.equal(metricsRow('DEMO-1', 'spec-plan', parseResult('boom')), '| DEMO-1 | spec-plan | unparsable | - | - | - | - | - | - |');
+  assert.equal(metricsRow('FEATURE-1', 'spec-plan', parseResult('boom')), '| FEATURE-1 | spec-plan | unparsable | - | - | - | - | - | - |');
 });
 
 test('METRICS_HEADER is a markdown table header', () => {
@@ -72,9 +72,9 @@ test('METRICS_HEADER is a markdown table header', () => {
 test('CLI row and field subcommands', () => {
   const file = join(mkdtempSync(join(tmpdir(), 'pr-')), 'out.json');
   writeFileSync(file, JSON.stringify(OK));
-  const row = spawnSync('node', [cli, 'row', 'DEMO-1', 'spec-clarify', file], { encoding: 'utf8' });
+  const row = spawnSync('node', [cli, 'row', 'FEATURE-1', 'spec-clarify', file], { encoding: 'utf8' });
   assert.equal(row.status, 0);
-  assert.match(row.stdout, /^\| DEMO-1 \| spec-clarify \| success \|/);
+  assert.match(row.stdout, /^\| FEATURE-1 \| spec-clarify \| success \|/);
   const err = spawnSync('node', [cli, 'field', 'is_error', file], { encoding: 'utf8' });
   assert.equal(err.stdout.trim(), 'false');
   const res = spawnSync('node', [cli, 'field', 'result', file], { encoding: 'utf8' });
@@ -89,7 +89,7 @@ test('CLI field is_error is true for unparsable output', () => {
 });
 
 test('cost is formatted with four decimals', () => {
-  const row = metricsRow('DEMO-1', 'p', parseResult(JSON.stringify({ ...OK, total_cost_usd: 0.1 })));
+  const row = metricsRow('FEATURE-1', 'p', parseResult(JSON.stringify({ ...OK, total_cost_usd: 0.1 })));
   assert.match(row, /\| 0\.1000 \|/);
 });
 

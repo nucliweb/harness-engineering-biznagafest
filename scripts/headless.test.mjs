@@ -15,8 +15,8 @@ const PHASES = ['spec-clarify', 'spec-plan', 'spec-implement', 'spec-validate'];
 const CLARIFICATION = readFileSync(join(fixtures, 'clarification/valid.md'), 'utf8');
 const PLAN = readFileSync(join(fixtures, 'plan/valid.md'), 'utf8');
 const TICKED = PLAN.replaceAll('- [ ]', '- [x]');
-const DOD = (verdict) => `# DEMO-1 · Definition of done\n\n## Checks\n\n| check | result | notes |\n|---|---|---|\n| lint | PASS | |\n\n## Suppressions\n- None\n\n## Verdict\n\n${verdict}\n`;
-const S = 'specs/DEMO-1';
+const DOD = (verdict) => `# FEATURE-1 · Definition of done\n\n## Checks\n\n| check | result | notes |\n|---|---|---|\n| lint | PASS | |\n\n## Suppressions\n- None\n\n## Verdict\n\n${verdict}\n`;
+const S = 'specs/FEATURE-1';
 
 // Replies that make every phase leave a valid artefact, so the deterministic checks pass.
 function happy(fake, overrides = {}, results = {}) {
@@ -39,7 +39,7 @@ function repoRoot() {
 // The runner's own env vars must not leak in from the process running the tests:
 // `pnpm test` runs inside headless runs too (validator-global), with CLAUDE_FLAGS set.
 const RUNNER_VARS = ['CLAUDE_FLAGS', 'SPEC_HEADLESS', 'HEADLESS_ALLOW_DIRTY'];
-function run(fake, { ticket = 'DEMO-1', extraEnv = {}, root = repoRoot() } = {}) {
+function run(fake, { ticket = 'FEATURE-1', extraEnv = {}, root = repoRoot() } = {}) {
   const base = { ...fake.env(), HEADLESS_ROOT: root };
   for (const name of RUNNER_VARS) delete base[name];
   const r = spawnSync('bash', [script, ticket], {
@@ -49,7 +49,7 @@ function run(fake, { ticket = 'DEMO-1', extraEnv = {}, root = repoRoot() } = {})
   return { ...r, root };
 }
 const metrics = (root) => readFileSync(join(root, 'docs/run-metrics.md'), 'utf8');
-const rows = (root) => metrics(root).split('\n').filter((l) => l.startsWith('| DEMO-1 '));
+const rows = (root) => metrics(root).split('\n').filter((l) => l.startsWith('| FEATURE-1 '));
 const blocked = (root) => readFileSync(join(root, S, 'BLOCKED.md'), 'utf8');
 
 test('success: runs the four skills in order with stream-json, the narrowed allow list and SPEC_HEADLESS=1', () => {
@@ -58,11 +58,11 @@ test('success: runs the four skills in order with stream-json, the narrowed allo
   const r = run(fake);
   assert.equal(r.status, 0, r.stderr);
   const calls = fake.calls();
-  assert.deepEqual(calls.map((c) => c.args[1]), PHASES.map((p) => `/${p} DEMO-1`));
+  assert.deepEqual(calls.map((c) => c.args[1]), PHASES.map((p) => `/${p} FEATURE-1`));
   for (const c of calls) {
     const line = c.args.join(' ');
     assert.ok(line.includes('--output-format stream-json --verbose --append-system-prompt'), line);
-    assert.ok(line.includes('specs/DEMO-1/BLOCKED.md'), 'the note names the real ticket');
+    assert.ok(line.includes('specs/FEATURE-1/BLOCKED.md'), 'the note names the real ticket');
     assert.ok(!line.includes('<TICKET>'));
     assert.ok(line.includes('--allowedTools Read Grep Glob Edit Write Agent Bash(pnpm --version) Bash(pnpm lint*) Bash(pnpm typecheck*) Bash(pnpm test*) Bash(pnpm build*) Bash(pnpm --filter *) Bash(pnpm exec vitest *) Bash(node .claude/scripts/*) Bash(node --test*) Bash(git diff*)'), line);
     assert.ok(!line.includes('rtk'));
@@ -72,7 +72,7 @@ test('success: runs the four skills in order with stream-json, the narrowed allo
   }
   const out = rows(r.root);
   assert.equal(out.length, 4);
-  assert.match(out[0], /^\| DEMO-1 \| spec-clarify \| success \| 1000 \| 1 \| 0\.1000 \| claude-sonnet-5-5 100\/20 \| 300 \| 40 \|$/);
+  assert.match(out[0], /^\| FEATURE-1 \| spec-clarify \| success \| 1000 \| 1 \| 0\.1000 \| claude-sonnet-5-5 100\/20 \| 300 \| 40 \|$/);
   assert.match(metrics(r.root), /^# Run metrics/);
 });
 
@@ -116,7 +116,7 @@ test('is_error stops the run, records the row, writes BLOCKED.md and exits 1', (
   happy(fake, {}, { 'spec-plan': resultJson({ is_error: true, subtype: 'error_max_turns', result: 'ran out of turns' }) });
   const r = run(fake);
   assert.equal(r.status, 1);
-  assert.deepEqual(fake.calls().map((c) => c.args[1]), ['/spec-clarify DEMO-1', '/spec-plan DEMO-1']);
+  assert.deepEqual(fake.calls().map((c) => c.args[1]), ['/spec-clarify FEATURE-1', '/spec-plan FEATURE-1']);
   assert.equal(rows(r.root).length, 2);
   assert.match(rows(r.root)[1], /error_max_turns/);
   assert.match(blocked(r.root), /SETUP_ERROR/);
@@ -141,7 +141,7 @@ test('BLOCKED.md created by a phase stops the run with exit 4', () => {
   fake.reply('spec-implement', resultJson(), { blocked: 'BLOCKED PLAN_MISMATCH\n' });
   const r = run(fake);
   assert.equal(r.status, 4);
-  assert.deepEqual(fake.calls().map((c) => c.args[1]), PHASES.slice(0, 3).map((p) => `/${p} DEMO-1`));
+  assert.deepEqual(fake.calls().map((c) => c.args[1]), PHASES.slice(0, 3).map((p) => `/${p} FEATURE-1`));
   assert.equal(rows(r.root).length, 3);
   assert.match(blocked(r.root), /PLAN_MISMATCH/);
 });

@@ -1,4 +1,4 @@
-# DEMO-2 · Clarification
+# FEATURE-2 · Clarification
 
 ## Goal
 

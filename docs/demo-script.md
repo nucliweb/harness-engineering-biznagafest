@@ -6,8 +6,8 @@ The talk shows one real run through a step-by-step page, then the repo. Nothing 
 
 | Step | Minutes | What | If the slot shrinks |
 |---|---|---|---|
-| 1 | 4 | `docs/demo/index.html`: nine screens, one real run (DEMO-4), the lines that matter framed, one narration card per frame | Keep; skip screens 4 and 7 |
-| 2 | 1 | The repo: `specs/DEMO-1/03-plan.md` and `specs/DEMO-1/journal.jsonl` in the editor, to show the page is not a mock-up | Cut |
+| 1 | 4 | `docs/demo/index.html`: nine screens, one real run (FEATURE-4), the lines that matter framed, one narration card per frame | Keep; skip screens 4 and 7 |
+| 2 | 1 | The repo: `specs/FEATURE-1/03-plan.md` and `specs/FEATURE-1/journal.jsonl` in the editor, to show the page is not a mock-up | Cut |
 
 Total: 5 minutes. The repo URL is the page's last screen and stays up for the "where can I see it" question.
 
@@ -26,10 +26,10 @@ open docs/demo/index.html
 
 - `pnpm test` is green: Vitest for the packages, then `node --test` for the scripts.
 - The page opens from `file://` with no network, in the browser you will use on stage. Press `f` for fullscreen, walk all nine screens with the right arrow once, press `t` to check the theme against the room's projector (light by default; dark if the room is dark), `n` to show the presenter notes strip, `l` to confirm the texts are in Spanish. Scan the QR on the last screen with a phone from the back of the room.
-- `ls specs` shows `DEMO-1`, `DEMO-2`, `DEMO-3` and `DEMO-4`. `specs/DEMO-4/` holds only `journal.jsonl`: the ticket was run for the page and then reset, so a person who clones the repo has a clean ticket to try.
-- Fallback if the browser misbehaves: `specs/DEMO-1/` in the editor tells the same story file by file, and `asciinema play -s 10 -i 2 docs/recordings/headless-demo-4.cast` is the raw recording the page was built from.
+- `ls specs` shows `FEATURE-1`, `FEATURE-2`, `FEATURE-3` and `FEATURE-4`. `specs/FEATURE-4/` holds only `journal.jsonl`: the ticket was run for the page and then reset. `FIX-1` has no folder at all. Both are clean tickets for a person who clones the repo.
+- Fallback if the browser misbehaves: `specs/FEATURE-1/` in the editor tells the same story file by file, and `asciinema play -s 10 -i 2 docs/recordings/headless-feature-4.cast` is the raw recording the page was built from.
 
-The morning of: browser zoom at 100 percent, the page open on screen 1 in fullscreen, the editor open behind it with `specs/DEMO-1/` expanded, notifications off.
+The morning of: browser zoom at 100 percent, the page open on screen 1 in fullscreen, the editor open behind it with `specs/FEATURE-1/` expanded, notifications off.
 
 ## Step 1: the page (4 min)
 
@@ -42,7 +42,7 @@ Say on screen 1: "This is one ticket going through the four phases with nobody a
 | 1 | Title, the ticket, total time and cost | Seventeen minutes, six dollars, ticket to GREEN |
 | 2 | Clarify | The main thread never searches the repo: the explorer does, on Haiku, in its own context. A script, not a model, says the artefact is valid |
 | 3 | Plan | Three explorers in parallel, closed decisions, then the plan auditor on Opus. Gate B is a table with thresholds |
-| 4 | Gate B interlude | DEMO-2 was too big: 22 files against 15, the run stopped and asked a person. The gate was set blind and calibrated on three runs |
+| 4 | Gate B interlude | FEATURE-2 was too big: 22 files against 15, the run stopped and asked a person. The gate was set blind and calibrated on three runs |
 | 5 | Implement | One developer per layer on Sonnet, one reviewer on Opus, never in parallel. The `✗` lines are friction, and friction is what the journal records |
 | 6 | Validate | Lint, typecheck, test, build and the artefact validators, run by the cheapest model. GREEN or nothing |
 | 7 | The journal | Append-only, written only by a script. Three attempts of this ticket are visible, including two gate calibrations and a RED verdict caused by a test bug |
@@ -53,17 +53,17 @@ Press space to advance frame by frame; each frame has its own card and note. If 
 
 ## Step 2: the repo (1 min)
 
-Switch to the editor. Open `specs/DEMO-1/03-plan.md` and point at one step line: one file, one line of pseudocode, the developer decides nothing. Open `specs/DEMO-1/journal.jsonl` and point at the `blocked` line from the first validate attempt: "We never edited this file, and the attempt that blocked on permissions is still there." Switch back to the page's last screen.
+Switch to the editor. Open `specs/FEATURE-1/03-plan.md` and point at one step line: one file, one line of pseudocode, the developer decides nothing. Open `specs/FEATURE-1/journal.jsonl` and point at the `blocked` line from the first validate attempt: "We never edited this file, and the attempt that blocked on permissions is still there." Switch back to the page's last screen.
 
 ## After the talk
 
-Nothing to reset. If someone asks to see it run, the README quick start gives them the four commands on DEMO-4. To put DEMO-4 back afterwards: delete its artefacts but keep `specs/DEMO-4/journal.jsonl`, then `git checkout -- apps packages` and `git clean -fd -- apps packages`. To rebuild the page after a new run: `node scripts/build-demo-page.mjs`.
+Nothing to reset. If someone asks to see it run, the README quick start gives them the four commands on FEATURE-4 or FIX-1. To put FEATURE-4 back afterwards: delete its artefacts but keep `specs/FEATURE-4/journal.jsonl`, then `git checkout -- apps packages` and `git clean -fd -- apps packages`. To rebuild the page after a new run: `node scripts/build-demo-page.mjs`.
 
 ## Likely questions from the audience
 
 **Why is `specs/` not under `.claude/`?** Claude Code treats every write under `.claude/` as sensitive and denies it in headless runs, even with an allow rule. Artefacts written by the agent cannot live there. Open `docs/contracts.md`, the paragraph starting "Everything a ticket produces lives in `specs/<TICKET>/`".
 
-**How much does it cost?** DEMO-1's four successful phase runs cost $1.86, $5.21, $3.48 and $1.19, about $11.74 in 23 minutes. The first validate attempt (blocked, `SETUP_ERROR`) added $1.13. These numbers come from the usage fields of `claude -p --output-format json` at list price, never estimated. Open `docs/run-metrics.md`.
+**How much does it cost?** FEATURE-1's four successful phase runs cost $1.86, $5.21, $3.48 and $1.19, about $11.74 in 23 minutes. The first validate attempt (blocked, `SETUP_ERROR`) added $1.13. These numbers come from the usage fields of `claude -p --output-format json` at list price, never estimated. Open `docs/run-metrics.md`.
 
 **Why is the reviewer a different model than the developer?** The developer is Sonnet and the reviewer is Opus, so they do not share blind spots. The same applies to the auditor (Opus) against the planner. Open `.claude/skills/spec-help/references/agents-and-models.md`, section "Why each model".
 

@@ -1,5 +1,5 @@
 ---
-id: DEMO-2
+id: FEATURE-2
 title: Favourite talks persisted in localStorage
 type: feature
 ---

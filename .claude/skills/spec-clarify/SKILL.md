@@ -12,7 +12,7 @@ Output: `specs/$0/00-clarification.md`, validated by a script. Then stop.
 
 ## Preconditions
 
-1. `$0` matches `^[A-Z]+-\d+$`. If not, reply `Usage: /spec-clarify <TICKET>, for example /spec-clarify DEMO-3` and stop.
+1. `$0` matches `^[A-Z]+-\d+$`. If not, reply `Usage: /spec-clarify <TICKET>, for example /spec-clarify FEATURE-3` and stop.
 2. `tickets/$0.md` exists. If not, say so and stop. (In a team setup an issue-tracker MCP call replaces this file read; nothing else in the flow changes.)
 3. This is phase 1, so there is no previous artefact to validate.
 

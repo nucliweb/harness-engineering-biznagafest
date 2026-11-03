@@ -4,7 +4,7 @@ import { appendEntry } from './lib/journal.mjs';
 import { isMain } from './lib/validate-cli.mjs';
 
 const USAGE =
-  'usage: node journal-append.mjs --ticket DEMO-1 --phase <phase> --actor <actor> --kind <kind> --summary "..." [--detail "..."] [--files a,b]';
+  'usage: node journal-append.mjs --ticket FEATURE-1 --phase <phase> --actor <actor> --kind <kind> --summary "..." [--detail "..."] [--files a,b]';
 
 export function main(argv) {
   let values;

@@ -199,7 +199,7 @@ function clarifyStep(src, phase, jm) {
       find: (tl) => tl.withResult(tl.first(tool('Write', /00-clarification\.md/))),
       content: () => ({
         claim: t('claim.artefactWritten'),
-        evidence: [{ type: 'list', source: 'specs/DEMO-1/00-clarification.md', items: headings, caption: SISTER_CAPTION }],
+        evidence: [{ type: 'list', source: 'specs/FEATURE-1/00-clarification.md', items: headings, caption: SISTER_CAPTION }],
         note: t('note.artefactWritten'),
       }),
     },
@@ -209,7 +209,7 @@ function clarifyStep(src, phase, jm) {
       content: () => ({
         claim: t('claim.scriptDecides'),
         evidence: [
-          { type: 'quote', source: 'specs/DEMO-1/00-clarification.md', text: `## Open questions\n\n${openQ}` },
+          { type: 'quote', source: 'specs/FEATURE-1/00-clarification.md', text: `## Open questions\n\n${openQ}` },
           { type: 'text', text: validatorRule, source: 'docs/contracts.md §4.1' },
         ],
         note: t('note.scriptDecides'),
@@ -298,7 +298,7 @@ function planStep(src, phase, jm) {
       content: () => ({
         claim: t('claim.scopeCheck', src.thresholds),
         evidence: [
-          { type: 'table', source: 'specs/DEMO-1/03-plan.md ## Scope check', head: scopeTable[0], rows: scopeTable.slice(1), after: verdict, caption: SISTER_CAPTION },
+          { type: 'table', source: 'specs/FEATURE-1/03-plan.md ## Scope check', head: scopeTable[0], rows: scopeTable.slice(1), after: verdict, caption: SISTER_CAPTION },
         ],
         note: t('note.scopeCheck'),
       }),
@@ -323,7 +323,7 @@ function planStep(src, phase, jm) {
                 [t('kv.canBlock'), blockingFamilies.join(' ')],
                 [t('kv.advice'), adviceFamilies.join(' ')],
                 audit && [src.ticket, audit],
-                ['DEMO-1', sisterAudit],
+                ['FEATURE-1', sisterAudit],
               ].filter(Boolean),
             },
           ],
@@ -338,7 +338,7 @@ function planStep(src, phase, jm) {
         claim: t('claim.planValidated'),
         evidence: [
           { type: 'quote', source: t('src.stepFormat'), text: stepFormat },
-          { type: 'quote', source: 'specs/DEMO-1/03-plan.md', text: cut(s2, 130), caption: SISTER_CAPTION },
+          { type: 'quote', source: 'specs/FEATURE-1/03-plan.md', text: cut(s2, 130), caption: SISTER_CAPTION },
         ],
         note: t('note.planValidated'),
       }),
@@ -507,7 +507,7 @@ function implementStep(src, phase, jm) {
         let caption;
         if (findings.length === 0) {
           findings = src.sister.journal.filter((e) => ['reviewer_finding', 'autofix_failed'].includes(e.kind)).slice(0, 1);
-          source = 'specs/DEMO-1/journal.jsonl';
+          source = 'specs/FEATURE-1/journal.jsonl';
           caption = SISTER_CAPTION;
         }
         return {
@@ -595,7 +595,7 @@ function validateStep(src, phase, jm) {
         evidence: [
           {
             type: 'table',
-            source: 'specs/DEMO-1/04-dod.md',
+            source: 'specs/FEATURE-1/04-dod.md',
             head: dodTable[0],
             rows: dodTable.slice(1).map((r) => [r[0], r[1], cut(r[2], 26)]),
             after: `Verdict: ${dodVerdict}`,
@@ -698,7 +698,7 @@ function gateStep(src) {
     phase: t('phase.gate'),
     stage: {
       type: 'gate',
-      blocked: { source: 'specs/DEMO-2/BLOCKED.md', firstLine, fenced },
+      blocked: { source: 'specs/FEATURE-2/BLOCKED.md', firstLine, fenced },
       calibrations: journalEv(calibrations, `specs/${src.ticket}/journal.jsonl`, 400),
       enforce: { source: '.claude/scripts/validate-plan.mjs', text: enforce },
     },
@@ -805,7 +805,7 @@ function numbersStep(src) {
     return [r[col('Agent')], model, r[col('Tools')], r[col('Effort')], price];
   });
   const fable = /Fable 5\.1 \((\$[\d.]+ \/ \$[\d.]+)\)/.exec(src.readme)?.[1];
-  const tickets = ['DEMO-1', 'DEMO-3', src.ticket].map((id) => {
+  const tickets = ['FEATURE-1', 'FEATURE-3', src.ticket].map((id) => {
     const rows = src.finalRun(src.metrics, id);
     return { id, main: rows[0]?.models[0]?.name ?? '', cost: rows.reduce((n, r) => n + r.cost, 0), seconds: rows.reduce((n, r) => n + r.seconds, 0) };
   });

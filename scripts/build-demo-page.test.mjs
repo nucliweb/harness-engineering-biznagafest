@@ -29,7 +29,7 @@ describe('parseCast', () => {
 
   it('splits output into lines, joining a line that spans two events', () => {
     assert.equal(cast.lines.length, 16);
-    assert.equal(cast.lines[4].text, '▶ Bash node .claude/scripts/validate-clarification.mjs specs/DEMO-9/00-clarification.md');
+    assert.equal(cast.lines[4].text, '▶ Bash node .claude/scripts/validate-clarification.mjs specs/FEATURE-9/00-clarification.md');
   });
 
   it('gives each line the absolute time at which it started', () => {
@@ -49,35 +49,35 @@ describe('parseCast', () => {
 
 describe('splitPhases', () => {
   const { lines } = parseCast(tiny);
-  const phases = splitPhases(lines, 'DEMO-9');
+  const phases = splitPhases(lines, 'FEATURE-9');
 
   it('cuts the log on the runner phase lines', () => {
     assert.deepEqual(phases.map((p) => p.name), ['spec-clarify', 'spec-plan']);
     assert.equal(phases[0].lines.length, 8);
-    assert.equal(phases[0].lines[0].text, 'headless: DEMO-9 spec-clarify');
+    assert.equal(phases[0].lines[0].text, 'headless: FEATURE-9 spec-clarify');
     assert.equal(phases[0].lines.at(-1).text, '■ success turns=3 cost=$0.1234 time=2.6s');
   });
 
   it('keeps the final done line with the last phase', () => {
-    assert.equal(phases[1].lines.at(-1).text, 'headless: DEMO-9 done, metrics in docs/run-metrics.md');
+    assert.equal(phases[1].lines.at(-1).text, 'headless: FEATURE-9 done, metrics in docs/run-metrics.md');
   });
 
   it('ignores runner lines of another ticket', () => {
-    assert.equal(splitPhases(lines, 'DEMO-1').length, 0);
+    assert.equal(splitPhases(lines, 'FEATURE-1').length, 0);
   });
 });
 
 describe('classify', () => {
   const cases = [
-    ['headless: DEMO-4 spec-plan', 'runner'],
-    ['headless: DEMO-4 done, metrics in docs/run-metrics.md', 'runner'],
-    ['▶ Read tickets/DEMO-4.md', 'read'],
+    ['headless: FEATURE-4 spec-plan', 'runner'],
+    ['headless: FEATURE-4 done, metrics in docs/run-metrics.md', 'runner'],
+    ['▶ Read tickets/FEATURE-4.md', 'read'],
     ['▶ Agent explorer', 'agent'],
     ['▶ Bash pnpm lint', 'bash'],
-    ['▶ Write specs/DEMO-4/00-clarification.md', 'write'],
-    ['▶ Edit specs/DEMO-4/03-plan.md', 'edit'],
+    ['▶ Write specs/FEATURE-4/00-clarification.md', 'write'],
+    ['▶ Edit specs/FEATURE-4/03-plan.md', 'edit'],
     ['▶ Grep (?i)room|track', 'grep'],
-    ['▶ Glob specs/DEMO-4/**', 'glob'],
+    ['▶ Glob specs/FEATURE-4/**', 'glob'],
     ['▶ Skill', 'skill'],
     ['  ✓ (Bash completed with no output)', 'ok'],
     ['  ✗ Exit code 1', 'error'],
@@ -109,9 +109,9 @@ describe('line helpers', () => {
 
   it('makes absolute repo paths relative, including a path cut short by the runner', () => {
     const repo = '/Users/someone/code/harness-engineering-biznagafest';
-    assert.equal(relativize(`  ✓ File created successfully at: ${repo}/specs/DEMO-4/00-clarification.md`, repo), '  ✓ File created successfully at: specs/DEMO-4/00-clarification.md');
+    assert.equal(relativize(`  ✓ File created successfully at: ${repo}/specs/FEATURE-4/00-clarification.md`, repo), '  ✓ File created successfully at: specs/FEATURE-4/00-clarification.md');
     assert.equal(relativize('▶ Bash pnpm lint:file /Users/someone/code/harness-engin', repo), '▶ Bash pnpm lint:file …');
-    assert.equal(relativize('▶ Read tickets/DEMO-4.md', repo), '▶ Read tickets/DEMO-4.md');
+    assert.equal(relativize('▶ Read tickets/FEATURE-4.md', repo), '▶ Read tickets/FEATURE-4.md');
   });
 });
 

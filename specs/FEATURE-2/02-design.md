@@ -1,4 +1,4 @@
-# DEMO-2 · Design
+# FEATURE-2 · Design
 
 ## Alternatives
 

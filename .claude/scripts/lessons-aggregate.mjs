@@ -12,7 +12,7 @@ const LAYER_PREFIXES = [
 ];
 
 // The layer is the first path that belongs to a package; spec and doc paths are skipped,
-// so an entry that lists `specs/DEMO-1/03-plan.md` before the code still lands in its layer.
+// so an entry that lists `specs/FEATURE-1/03-plan.md` before the code still lands in its layer.
 export function layerOf(files) {
   if (!Array.isArray(files)) return 'unknown';
   for (const file of files) {

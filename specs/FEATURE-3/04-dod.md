@@ -1,4 +1,4 @@
-# DEMO-3 · Definition of done
+# FEATURE-3 · Definition of done
 
 ## Checks
 
