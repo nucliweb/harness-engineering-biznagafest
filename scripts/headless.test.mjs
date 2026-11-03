@@ -67,7 +67,7 @@ test('success: runs the four skills in order with stream-json, the narrowed allo
     assert.ok(line.includes('--allowedTools Read Grep Glob Edit Write Agent Bash(pnpm --version) Bash(pnpm lint*) Bash(pnpm typecheck*) Bash(pnpm test*) Bash(pnpm build*) Bash(pnpm --filter *) Bash(pnpm exec vitest *) Bash(node .claude/scripts/*) Bash(node --test*) Bash(git diff*)'), line);
     assert.ok(!line.includes('rtk'));
     assert.ok(!line.includes('Bash(node *)') && !line.includes('Bash(pnpm *)') && !line.includes('Bash(npx'));
-    assert.ok(line.endsWith('--permission-mode acceptEdits --permission-prompts none --max-turns 150'), line);
+    assert.ok(line.endsWith('--model opus --permission-mode acceptEdits --permission-prompts none --max-turns 150'), line);
     assert.equal(c.env.SPEC_HEADLESS, '1');
   }
   const out = rows(r.root);

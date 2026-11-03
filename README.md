@@ -133,7 +133,7 @@ All of them are Node scripts with no dependency beyond built-ins, a test file ne
 | validator-global | haiku | Read, Write, Bash | low | Runs the root scripts and the validators, writes `04-dod.md` | Fix anything | Haiku 5.5: $0.10 / $0.50 |
 | design-qa | sonnet | Read, Write, Bash (Playwright CLI) | medium | Screenshots per viewport, compares with `02-design.md` | Edit code | Sonnet 5.5: $2 / $10 |
 
-The main thread (the `spec-*` skills) inherits the session model; the DEMO-1 run used Fable 5.1 ($10 / $50). A different model reviews than the one that wrote, so the reviewer does not share the developer's blind spots. Prices are list prices; Claude Code's cost output is a client-side estimate at those prices.
+The main thread (the `spec-*` skills) inherits the session model in interactive use; the DEMO-1 run used Fable 5.1 ($10 / $50). The headless runner sets `--model opus` by default, which the measured runs justify (see below); `CLAUDE_FLAGS` overrides it. A different model reviews than the one that wrote, so the reviewer does not share the developer's blind spots. Prices are list prices; Claude Code's cost output is a client-side estimate at those prices.
 
 ## Measured, not claimed
 
@@ -182,7 +182,7 @@ Same harness, two main-thread models: DEMO-1 on Fable 5.1 cost 11.74 USD for its
 
 ## Autopilot and adversarial review
 
-`scripts/headless.sh <TICKET>` exports `SPEC_HEADLESS=1` and runs the four skills in series through `claude -p`. Where a phase would ask a person, it takes the conservative option and journals a `decision` with actor `headless`. It streams one line per tool call and subagent to the terminal (`▶ Agent explorer`, `✓ Write specs/DEMO-3/00-clarification.md`), appends time and cost per phase to `docs/run-metrics.md`, and stops at the first block. After each phase it runs that phase's validator itself, so a phase that ends in prose instead of an artefact is a block, not a success. It refuses to start on a dirty `apps/` or `packages/` tree unless `HEADLESS_ALLOW_DIRTY=1`.
+`scripts/headless.sh <TICKET>` exports `SPEC_HEADLESS=1` and runs the four skills in series through `claude -p`, with the main thread on Opus 5.5 unless `CLAUDE_FLAGS` says otherwise. Where a phase would ask a person, it takes the conservative option and journals a `decision` with actor `headless`. It streams one line per tool call and subagent to the terminal (`▶ Agent explorer`, `✓ Write specs/DEMO-3/00-clarification.md`), appends time and cost per phase to `docs/run-metrics.md`, and stops at the first block. After each phase it runs that phase's validator itself, so a phase that ends in prose instead of an artefact is a block, not a success. It refuses to start on a dirty `apps/` or `packages/` tree unless `HEADLESS_ALLOW_DIRTY=1`.
 
 | Exit code | Meaning |
 |---|---|

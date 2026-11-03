@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Runs the four spec skills in series through `claude -p` in headless mode.
 # Usage: scripts/headless.sh <TICKET>
-# Env:   CLAUDE_FLAGS         overrides the default flags
+# Env:   CLAUDE_FLAGS         overrides the default flags (default: --model opus --permission-mode acceptEdits --permission-prompts none --max-turns 150)
 #        HEADLESS_ALLOW_DIRTY=1  starts even with uncommitted changes in apps/ or packages/
 #        HEADLESS_ROOT        overrides the repo root (tests)
 # Exit:  0 all phases done and verified
@@ -22,7 +22,7 @@ ALLOW=(--allowedTools Read Grep Glob Edit Write Agent
   "Bash(node .claude/scripts/*)" "Bash(node --test*)"
   "Bash(git diff*)" "Bash(git status*)" "Bash(git log*)" "Bash(git ls-files*)"
   "Bash(ls *)" "Bash(cat *)" "Bash(grep *)" "Bash(head *)" "Bash(tail *)" "Bash(wc *)")
-DEFAULT_FLAGS="--permission-mode acceptEdits --permission-prompts none --max-turns 150"
+DEFAULT_FLAGS="--model opus --permission-mode acceptEdits --permission-prompts none --max-turns 150"
 FLAGS="${CLAUDE_FLAGS-$DEFAULT_FLAGS}"
 PHASES="spec-clarify spec-plan spec-implement spec-validate"
 
