@@ -1,0 +1,16 @@
+.header {
+  padding: var(--space-6) var(--space-4);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+}
+
+.main {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+}

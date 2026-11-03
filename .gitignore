@@ -147,3 +147,11 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# pnpm / build output
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Vitest cache
+.vitest/

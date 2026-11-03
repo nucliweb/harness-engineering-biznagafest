@@ -1,0 +1,226 @@
+[
+  {
+    "id": "L1",
+    "text": "Interface signatures use the global JSX namespace, which React 19 types removed; signatures must match the annotation style of the code they extend.",
+    "layer": "ui",
+    "kinds": [
+      "auditor_finding"
+    ],
+    "tickets": [
+      "DEMO-1"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L2",
+    "text": "Page-level text queries that run on the whole screen also match the filter's own option labels; scope track-badge assertions to each article.",
+    "layer": "agenda",
+    "kinds": [
+      "auditor_finding"
+    ],
+    "tickets": [
+      "DEMO-1"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L3",
+    "text": "A step gives an insertion position that contradicts the ordering rule it also states, leaving the developer to choose.",
+    "layer": "core",
+    "kinds": [
+      "auditor_finding"
+    ],
+    "tickets": [
+      "DEMO-1"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L4",
+    "text": "An acceptance-criterion path (an empty slot is dropped) is never exercised because the seed data never produces it; add a unit case with fixture data that does.",
+    "layer": "core",
+    "kinds": [
+      "auditor_finding"
+    ],
+    "tickets": [
+      "DEMO-1"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L5",
+    "text": "a DoD clause that claims a component is stateless must be backed by a test that changes the control without updating the prop and checks that the prop value still shows",
+    "layer": "ui",
+    "kinds": [
+      "auditor_finding"
+    ],
+    "tickets": [
+      "DEMO-1"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L6",
+    "text": "a test case for a DoD clause must name the exact input and argument, so the developer does not choose which call proves the clause",
+    "layer": "core",
+    "kinds": [
+      "auditor_finding"
+    ],
+    "tickets": [
+      "DEMO-1"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L7",
+    "text": "Typecheck failed on `slots[0]` being possibly undefined in filterTalksByTrack.test.ts (attempt 1); rewrote the assertions with map and flatMap and all checks went green.",
+    "layer": "core",
+    "kinds": [
+      "autofix_failed"
+    ],
+    "tickets": [
+      "DEMO-1"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L8",
+    "text": "Case (6) asserts slot start and talk ids through map and flatMap instead of indexing slots[0], because of noUncheckedIndexedAccess.",
+    "layer": "core",
+    "kinds": [
+      "deviation"
+    ],
+    "tickets": [
+      "DEMO-1"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L9",
+    "text": "The post-edit ESLint hook reported unused imports and helpers on App.test.tsx after the first of two edits, before the tests that use them were added. The second edit cleared it, and lint was green on the first full check run.",
+    "layer": "agenda",
+    "kinds": [
+      "autofix_failed"
+    ],
+    "tickets": [
+      "DEMO-1"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L10",
+    "text": "specs/DEMO-1/ DoD not produced; the permission system denied pnpm lint, typecheck, test and build, so no check results exist.",
+    "layer": "unknown",
+    "kinds": [
+      "blocked"
+    ],
+    "tickets": [
+      "DEMO-1"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L11",
+    "text": "SETUP_ERROR, the permission system denied starting the dev server, so no screenshots were taken for design QA.",
+    "layer": "unknown",
+    "kinds": [
+      "blocked"
+    ],
+    "tickets": [
+      "DEMO-1"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L12",
+    "text": "headless run failed in spec-plan (exit 1, subtype success)",
+    "layer": "unknown",
+    "kinds": [
+      "blocked"
+    ],
+    "tickets": [
+      "DEMO-3"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L13",
+    "text": "Every EARS line, including \"exposed from index.ts\", needs a step with a test that would fail without the change; the plan left the public export untested.",
+    "layer": "core",
+    "kinds": [
+      "reviewer_finding"
+    ],
+    "tickets": [
+      "DEMO-3"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L14",
+    "text": "a reviewer cannot verify \"existing tests unchanged\" or scope from git when the layer has no committed baseline; commit the baseline before starting a ticket",
+    "layer": "agenda",
+    "kinds": [
+      "reviewer_finding"
+    ],
+    "tickets": [
+      "DEMO-3"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L15",
+    "text": "specs/DEMO-3/ DoD run stopped at setup check because `pnpm --version` was denied by the permission system (approval required, none available), so no checks were run.",
+    "layer": "unknown",
+    "kinds": [
+      "blocked"
+    ],
+    "tickets": [
+      "DEMO-3"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  },
+  {
+    "id": "L16",
+    "text": "DoD run stopped at the validator-global setup check because pnpm --version was denied by the permission system in a headless session, so no checks ran and 04-dod.md was not written",
+    "layer": "unknown",
+    "kinds": [
+      "blocked"
+    ],
+    "tickets": [
+      "DEMO-3"
+    ],
+    "status": "candidate",
+    "first_seen": "2026-11-03",
+    "last_seen": "2026-11-03"
+  }
+]

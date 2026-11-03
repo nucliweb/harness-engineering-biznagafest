@@ -1,0 +1,26 @@
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+}
+
+.meta {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.speakers {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.role {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
