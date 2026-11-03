@@ -1,16 +1,15 @@
 # Demo script
 
-The talk shows the repo and a commented recording. Nothing runs live: no network, no model call, no waiting on stage. Everything the recording shows is committed, so any claim can be checked afterwards by opening a file.
+The talk shows one real run through a step-by-step page, then the repo. Nothing runs live: no network, no model call, no waiting on stage. The page is generated from the run's own recording, artefacts, journal and metrics, so every line on it can be checked afterwards by opening a file.
 
 ## Timing
 
 | Step | Minutes | What | If the slot shrinks |
 |---|---|---|---|
-| 1 | 2 | The recording: one headless run of a ticket through the four phases, played at speed while you narrate | Keep |
-| 2 | 2 | The repo: the artefacts the run produced and the journal | Cut to one file: `03-plan.md` |
-| 3 | 1 | The numbers: `docs/run-metrics.md` and the model table | Cut |
+| 1 | 4 | `docs/demo/index.html`: nine screens, one real run (DEMO-4), the lines that matter framed, one narration card per frame | Keep; skip screens 4 and 7 |
+| 2 | 1 | The repo: `specs/DEMO-1/03-plan.md` and `specs/DEMO-1/journal.jsonl` in the editor, to show the page is not a mock-up | Cut |
 
-Total: 5 minutes. The repo URL stays on screen on the closing slide for the "where can I see it" question.
+Total: 5 minutes. The repo URL is the page's last screen and stays up for the "where can I see it" question.
 
 ## Before the talk
 
@@ -21,52 +20,44 @@ git clone https://github.com/nucliweb/harness-engineering-biznagafest.git ~/demo
 cd ~/demo/harness
 pnpm install
 pnpm test
-asciinema --version
-asciinema play -s 10 -i 2 docs/recordings/headless-demo-4.cast
+node scripts/build-demo-page.mjs
+open docs/demo/index.html
 ```
 
 - `pnpm test` is green: Vitest for the packages, then `node --test` for the scripts.
-- The recording plays end to end and finishes with `headless: DEMO-4 done`. Tune `-s` so the whole thing lasts about 2 minutes; `-i 2` caps idle gaps at 2 seconds.
-- `ls specs` shows `DEMO-1`, `DEMO-2` and `DEMO-3`. `specs/DEMO-4/` does not exist: DEMO-4 is kept unrun so a person who clones the repo has a clean ticket to try.
-- Fallback if `asciinema` is missing on the venue machine: the GIF at `docs/recordings/headless-demo-4.gif` plays in any browser or slide tool, and `specs/DEMO-3/` tells the same story file by file.
+- The page opens from `file://` with no network, in the browser you will use on stage. Press `f` for fullscreen, walk all nine screens with the right arrow once, press `t` to check the theme against the room's projector (light by default; dark if the room is dark), `n` to show the presenter notes strip, `l` to confirm the texts are in Spanish. Scan the QR on the last screen with a phone from the back of the room.
+- `ls specs` shows `DEMO-1`, `DEMO-2`, `DEMO-3` and `DEMO-4`. `specs/DEMO-4/` holds only `journal.jsonl`: the ticket was run for the page and then reset, so a person who clones the repo has a clean ticket to try.
+- Fallback if the browser misbehaves: `specs/DEMO-1/` in the editor tells the same story file by file, and `asciinema play -s 10 -i 2 docs/recordings/headless-demo-4.cast` is the raw recording the page was built from.
 
-The morning of: terminal font at 20 points or larger, window about 120 columns wide, dark or light theme matching the slides, notifications off, the repo folder open in the editor with `specs/DEMO-1/` expanded.
+The morning of: browser zoom at 100 percent, the page open on screen 1 in fullscreen, the editor open behind it with `specs/DEMO-1/` expanded, notifications off.
 
-## Step 1: the recording (2 min)
+## Step 1: the page (4 min)
 
-Say: "This is one ticket going through the four phases with nobody at the keyboard. Every line is a tool call as it happened."
+Keys: right arrow or space moves to the next framed line, and to the next screen after the last frame; left arrow goes back; `1` to `9` jump to a screen; `f` fullscreen; `t` theme; `n` presenter notes; `l` switches the texts between Spanish and English (the log, the artefact excerpts and the journal stay in English, as in the repo). The page opens in Spanish when the browser is Spanish; `?lang=es` or `?lang=en` in the URL forces one. The closing screen carries the repo QR, large enough to scan from the room: leave it up during the questions.
 
-```bash
-asciinema play -s 10 -i 2 docs/recordings/headless-demo-4.cast
-```
+Say on screen 1: "This is one ticket going through the four phases with nobody at the keyboard. What you will see is the real log of that run; the frames are ours, the lines are not."
 
-Narrate over it, in order:
+| Screen | What is on it | What to say |
+|---|---|---|
+| 1 | Title, the ticket, total time and cost | Seventeen minutes, six dollars, ticket to GREEN |
+| 2 | Clarify | The main thread never searches the repo: the explorer does, on Haiku, in its own context. A script, not a model, says the artefact is valid |
+| 3 | Plan | Three explorers in parallel, closed decisions, then the plan auditor on Opus. Gate B is a table with thresholds |
+| 4 | Gate B interlude | DEMO-2 was too big: 22 files against 15, the run stopped and asked a person. The gate was set blind and calibrated on three runs |
+| 5 | Implement | One developer per layer on Sonnet, one reviewer on Opus, never in parallel. The `✗` lines are friction, and friction is what the journal records |
+| 6 | Validate | Lint, typecheck, test, build and the artefact validators, run by the cheapest model. GREEN or nothing |
+| 7 | The journal | Append-only, written only by a script. Three attempts of this ticket are visible, including two gate calibrations and a RED verdict caused by a test bug |
+| 8 | The numbers | Cost per phase, the agents table with list prices, Fable versus Opus on the same harness |
+| 9 | The harness and the URL | Three lessons, the files that show them, the repo |
 
-1. `headless: DEMO-4 spec-clarify`, then `▶ Read tickets/DEMO-4.md` and `▶ Agent explorer`: the main thread never greps the repo; the explorer does, in its own context, and only its answer comes back.
-2. `▶ Write specs/DEMO-4/00-clarification.md` followed by `▶ Bash node .claude/scripts/validate-clarification.mjs`: a script decides whether the artefact is valid, not the model.
-3. `headless: DEMO-4 spec-plan`: explorer per layer, then `▶ Agent plan-auditor`. Point at the auditor running on Opus while the main thread writes on Opus and the explorer searches on Haiku.
-4. `headless: DEMO-4 spec-implement`: `▶ Agent developer-package` then `▶ Agent reviewer-package`, three times, in the order core, ui, agenda. A different model reviews than the one that wrote.
-5. Any `✗` line: that is friction, and friction is what the journal records. Green on the first try is not.
-6. `headless: DEMO-4 spec-validate`, `▶ Agent validator-global`, the `■ success` line with cost and time, and the final `headless: DEMO-4 done, metrics in docs/run-metrics.md`.
+Press space to advance frame by frame; each frame has its own card and note. If a question comes mid-way, answer and press space again; the page keeps its place and the URL hash keeps the screen on a reload.
 
-Press space to pause on any line you want to talk about. `q` quits.
+## Step 2: the repo (1 min)
 
-## Step 2: the repo (2 min)
-
-Open, in this order:
-
-- `specs/DEMO-1/03-plan.md`: the `## Scope check` table and the verdict at the top, a step line (one file, one line of pseudocode, the developer decides nothing), and the `## Audit` line at the bottom.
-- `specs/DEMO-1/journal.jsonl`: one `auditor_finding` line and the `blocked` line from the validate phase. Say: "Append-only. We never edited it, and the first validate attempt that blocked on permissions is still there."
-- `specs/DEMO-2/BLOCKED.md`: the ticket that was too big. Gate B said Split, the runner stopped and asked for a person.
-- `.claude/agents/`: six files, one job each. Open `explorer.md` and point at `model: haiku` and `tools: Read, Grep, Glob`.
-
-## Step 3: the numbers (1 min)
-
-Open `docs/run-metrics.md`. Point at one complete run and read the cost per phase. Then the "Agents and models" table in `README.md`, with the list price next to each model. Say: "Measured, not claimed. Every row comes from the usage fields of the run."
+Switch to the editor. Open `specs/DEMO-1/03-plan.md` and point at one step line: one file, one line of pseudocode, the developer decides nothing. Open `specs/DEMO-1/journal.jsonl` and point at the `blocked` line from the first validate attempt: "We never edited this file, and the attempt that blocked on permissions is still there." Switch back to the page's last screen.
 
 ## After the talk
 
-Nothing to reset. If someone asks to see it run, the README quick start gives them the four commands on DEMO-4.
+Nothing to reset. If someone asks to see it run, the README quick start gives them the four commands on DEMO-4. To put DEMO-4 back afterwards: delete its artefacts but keep `specs/DEMO-4/journal.jsonl`, then `git checkout -- apps packages` and `git clean -fd -- apps packages`. To rebuild the page after a new run: `node scripts/build-demo-page.mjs`.
 
 ## Likely questions from the audience
 

@@ -18,3 +18,13 @@
 | DEMO-3 | spec-implement | success | 436418 | 31 | 2.4208 | claude-opus-5-5 60/38282; claude-sonnet-5-5 57/16195 | 1880871 | 220323 |
 | DEMO-3 | spec-validate | blocked SETUP_ERROR (pnpm --version missing from the allowlist; added, re-run below) | 30446 | 7 | 0.3630 | claude-opus-5-5 12/2003; claude-haiku-5-5 4/1025 | 257985 | 46014 |
 | DEMO-3 | spec-validate | success | 66996 | 7 | 0.1071 | claude-opus-5-5 12/1509; claude-haiku-5-5 12/2484 | 363495 | 13305 |
+| DEMO-4 | spec-clarify | success (attempt 1) | 85475 | 15 | 0.5587 | claude-opus-5-5 18/5442; claude-haiku-5-5 8/3824 | 408433 | 72584 |
+| DEMO-4 | spec-plan | blocked NEEDS_DECISION (attempt 1: Split at 4 new exported symbols against 3; threshold moved to 6, see the journal) | 312883 | 46 | 2.1264 | claude-opus-5-5 48/36256; claude-haiku-5-5 22/9106 | 2111902 | 163751 |
+| DEMO-4 | spec-clarify | success (attempt 2) | 86433 | 15 | 0.5637 | claude-opus-5-5 18/5586; claude-haiku-5-5 10/3134 | 499286 | 71037 |
+| DEMO-4 | spec-plan | success (attempt 2) | 281377 | 21 | 2.1799 | claude-opus-5-5 60/34000; claude-haiku-5-5 22/13082 | 1924550 | 201746 |
+| DEMO-4 | spec-implement | success (attempt 2) | 390782 | 29 | 2.2481 | claude-opus-5-5 60/33663; claude-sonnet-5-5 46/14121 | 1827894 | 206997 |
+| DEMO-4 | spec-validate | RED, blocked (attempt 2: pnpm test failed on a runner test that inherited CLAUDE_FLAGS from the run itself; test fixed) | 94038 | 15 | 0.5075 | claude-opus-5-5 24/3678; claude-haiku-5-5 14/3207 | 649349 | 63657 |
+| DEMO-4 | spec-clarify | success | 70629 | 17 | 0.5686 | claude-opus-5-5 18/5561; claude-haiku-5-5 8/3320 | 421541 | 72269 |
+| DEMO-4 | spec-plan | success | 439425 | 40 | 2.5880 | claude-opus-5-5 60/44298; claude-haiku-5-5 24/11403 | 2186646 | 221528 |
+| DEMO-4 | spec-implement | success | 478866 | 31 | 2.4873 | claude-opus-5-5 60/38376; claude-sonnet-5-5 47/14695 | 1989096 | 228170 |
+| DEMO-4 | spec-validate | success | 63337 | 7 | 0.3579 | claude-opus-5-5 12/1369; claude-haiku-5-5 18/2388 | 374118 | 57957 |

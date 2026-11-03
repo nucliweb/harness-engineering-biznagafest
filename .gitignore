@@ -155,3 +155,6 @@ dist/
 
 # Vitest cache
 .vitest/
+
+# Rendered GIFs of the recordings are built locally with agg (see docs/demo-script.md)
+docs/recordings/*.gif

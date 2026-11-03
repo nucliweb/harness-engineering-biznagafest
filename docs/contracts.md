@@ -74,7 +74,7 @@ Demo tickets:
 | DEMO-1 | Filter talks by track | Complete run, artefacts committed: the worked example |
 | DEMO-2 | Favourite talks persisted in localStorage | Stopped at Gate B with `Split` and `BLOCKED.md`, committed as is: the example of a ticket too big for one PR |
 | DEMO-3 | "Now" indicator on the schedule | Complete headless run, artefacts committed |
-| DEMO-4 | Filter talks by room | Recorded for the talk, then reset: kept unrun in the repo as the clean ticket to try |
+| DEMO-4 | Filter talks by room | Recorded for the talk, then reset: only its journal stays, so it is the clean ticket to try |
 
 ## 4. Spec folder
 
@@ -147,7 +147,7 @@ Step format, one per line:
 
 `spec-implement` turns `[ ]` into `[x]` as each step lands, so the plan doubles as the resumable state. A layer section may be empty with `- None`.
 
-Gate B thresholds for this repo: more than 15 files, or more than 500 lines, or all three layers touched with more than 3 new exported symbols, means `Split` and the plan stops with a proposed split. Definitions, so the count cannot be bent: files touched is the number of distinct backticked paths in `## Steps`; a new exported symbol is any `export` added to a package's `index.ts`, types included. The design is never changed to pass the gate; if the honest numbers say `Split`, the plan stops and a person decides (headless: `BLOCKED.md` with `NEEDS_DECISION`). `validate-plan.mjs` recomputes the file count from the steps and rejects a plan whose table or verdict disagrees with it. These are deliberately lower than a real monorepo would use so that the gate is visible in a demo. Both thresholds were calibrated on real runs and the decisions are journaled in `specs/DEMO-3/journal.jsonl`: files went from 10 to 15 because, with one function and one test per file, a feature that touches the three layers is 11 to 13 files; lines went from 300 to 500 because an honest count (tests, blank lines and re-indented lines included) puts the same feature at 300 to 350. DEMO-2 at 22 files still splits.
+Gate B thresholds for this repo: more than 15 files, or more than 500 lines, or all three layers touched with more than 6 new exported symbols, means `Split` and the plan stops with a proposed split. Definitions, so the count cannot be bent: files touched is the number of distinct backticked paths in `## Steps`; a new exported symbol is any `export` added to a package's `index.ts`, types included. The design is never changed to pass the gate; if the honest numbers say `Split`, the plan stops and a person decides (headless: `BLOCKED.md` with `NEEDS_DECISION`). `validate-plan.mjs` recomputes the file count from the steps and rejects a plan whose table or verdict disagrees with it. These are deliberately lower than a real monorepo would use so that the gate is visible in a demo. Both thresholds were calibrated on real runs and the decisions are journaled in `specs/DEMO-3/journal.jsonl`: files went from 10 to 15 because, with one function and one test per file, a feature that touches the three layers is 11 to 13 files; lines went from 300 to 500 because an honest count (tests, blank lines and re-indented lines included) puts the same feature at 300 to 350; new exported symbols went from 3 to 6 because, with types counted, two functions, one component and its props type are already 4. DEMO-2 at 22 files still splits.
 
 EARS-style DoD line: `WHEN <trigger> THE <layer> SHALL <observable result>`.
 

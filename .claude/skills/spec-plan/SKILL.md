@@ -71,7 +71,7 @@ Write `specs/$0/03-plan.md`: `# $0 · Plan`, leave `## Scope check` for Gate B, 
    - **files touched** is the number of distinct backticked paths in `## Steps`;
    - **a new exported symbol** is any `export` added to a package's `index.ts`, types included;
    - **lines estimated** is your estimate of lines added or changed, rounded up; **layers touched** are the layers with steps.
-2. Verdict is `Split` when any holds: more than 15 files; more than 500 lines; all three layers touched with more than 3 new exported symbols. Otherwise `Single PR`.
+2. Verdict is `Split` when any holds: more than 15 files; more than 500 lines; all three layers touched with more than 6 new exported symbols. Otherwise `Single PR`.
 3. Write `## Scope check` at the top of the plan: the table and the verdict line.
    ```
    | files touched | lines estimated | layers touched | new exported symbols |

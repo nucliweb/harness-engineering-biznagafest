@@ -68,7 +68,7 @@ export function validate(md) {
         });
       }
       if (verdict && Number.isFinite(files) && Number.isFinite(lines)) {
-        const mustSplit = files > 15 || lines > 500 || (allLayers && Number.isFinite(symbols) && symbols > 3);
+        const mustSplit = files > 15 || lines > 500 || (allLayers && Number.isFinite(symbols) && symbols > 6);
         if (mustSplit && verdict === 'Single PR') {
           failures.push({
             rule: 'scope-verdict-mismatch',

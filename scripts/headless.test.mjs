@@ -36,10 +36,15 @@ function repoRoot() {
   return root;
 }
 
+// The runner's own env vars must not leak in from the process running the tests:
+// `pnpm test` runs inside headless runs too (validator-global), with CLAUDE_FLAGS set.
+const RUNNER_VARS = ['CLAUDE_FLAGS', 'SPEC_HEADLESS', 'HEADLESS_ALLOW_DIRTY'];
 function run(fake, { ticket = 'DEMO-1', extraEnv = {}, root = repoRoot() } = {}) {
+  const base = { ...fake.env(), HEADLESS_ROOT: root };
+  for (const name of RUNNER_VARS) delete base[name];
   const r = spawnSync('bash', [script, ticket], {
     encoding: 'utf8',
-    env: { ...fake.env(), HEADLESS_ROOT: root, ...extraEnv },
+    env: { ...base, ...extraEnv },
   });
   return { ...r, root };
 }

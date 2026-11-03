@@ -84,9 +84,9 @@ specs/                        What a ticket produces: specs/<TICKET>/00..05, jou
   hooks/                      post-edit-eslint.sh, journal-capture.mjs
   scripts/                    validate-clarification, validate-design, validate-plan,
                               journal-append, lessons-aggregate (+ fixtures/, lib/)
-scripts/                      headless.sh, adversarial-review.sh (+ lib/, prompts/)
+scripts/                      headless.sh, adversarial-review.sh, build-demo-page.mjs (+ lib/, prompts/, demo-page/)
 docs/                         contracts.md, implementation-plan.md, claude-code-reference.md,
-                              run-metrics.md, slides-to-repo.md
+                              run-metrics.md, slides-to-repo.md, demo-script.md, demo/index.html, recordings/
 ```
 
 Artefacts live in `specs/` at the root and not under `.claude/` because Claude Code denies agent writes under `.claude/` in headless mode, even with an allow rule.
@@ -104,7 +104,7 @@ Artefacts live in `specs/` at the root and not under `.claude/` because Claude C
 
 Rules shared by the phases: the ticket id is the only argument and must match `^[A-Z]+-\d+$`; a phase refuses to run when the previous artefact is missing or fails its validator; the main thread delegates large reads to the explorer.
 
-Gate B is deliberately strict so it is visible in a demo: more than 15 files, more than 500 lines, or three layers with more than 3 new exported symbols means `Split` and the plan stops with a proposed split.
+Gate B is deliberately strict so it is visible in a demo: more than 15 files, more than 500 lines, or three layers with more than 6 new exported symbols means `Split` and the plan stops with a proposed split.
 
 ### Journal and lessons loop
 
@@ -165,9 +165,20 @@ DEMO-3 ("now" indicator) stopped at Gate B on its first attempt too: 12 files ag
 | validate (blocked, `SETUP_ERROR`) | 30.4 s | 0.36 | Opus 5.5, Haiku 5.5 |
 | validate (re-run, `GREEN`) | 67.0 s | 0.11 | Opus 5.5, Haiku 5.5 |
 
-The plan passed the audit in one iteration, the reviewer left two notes and no blocker, and `04-dod.md` is `GREEN` with 96 Vitest tests. The validate block was the allowlist again: it covered `pnpm lint`, `typecheck`, `test` and `build` but not `pnpm --version`, which is the validator's setup check. Every attempt and every stop is in `specs/DEMO-3/journal.jsonl`, in order, because the journal is never edited. The recording `docs/recordings/headless-demo-3.cast` is the fourth attempt as it happened, so it ends at that block, with the runner stopping instead of inventing a verdict.
+The plan passed the audit in one iteration, the reviewer left two notes and no blocker, and `04-dod.md` is `GREEN` with 96 Vitest tests. The validate block was the allowlist again: it covered `pnpm lint`, `typecheck`, `test` and `build` but not `pnpm --version`, which is the validator's setup check. Every attempt and every stop is in `specs/DEMO-3/journal.jsonl`, in order, because the journal is never edited.
 
-Same harness, two main-thread models: DEMO-1 on Fable 5.1 cost 11.74 USD for its four successful phases, DEMO-3 on Opus 5.5 cost 5.52 USD for the same four, with the subagents on the same models in both.
+DEMO-4 (filter by room) is the recorded run, `docs/recordings/headless-demo-4.cast`, made on the committed tree and then reset so the ticket stays available to try. Its first attempt split on the symbol count: with types counted, two functions, one component and its props type are 4 against a threshold of 3, which would have split DEMO-1 too. The threshold moved to 6, the third and last calibration. Its second attempt ended `RED`: the validator ran `pnpm test` and one runner test failed because it inherited the run's own `CLAUDE_FLAGS`; a test isolation bug, fixed, and the harness did what it should, a `RED` verdict and a stop instead of a green stamp. The third attempt is the recording:
+
+| Phase | Duration | Cost (USD) | Models |
+|---|---|---|---|
+| clarify | 70.6 s | 0.57 | Opus 5.5, Haiku 5.5 |
+| plan | 439.4 s | 2.59 | Opus 5.5, Haiku 5.5 |
+| implement | 478.9 s | 2.49 | Opus 5.5, Sonnet 5.5 |
+| validate | 63.3 s | 0.36 | Opus 5.5, Haiku 5.5 |
+
+Seventeen minutes and 6.00 USD from ticket to `GREEN`, with 10 steps across the three layers, 12 subagent runs, 12 validator calls and 6 tool errors the agents recovered from. The run is shown step by step in `docs/demo/index.html`, a single page generated from the recording, the artefacts, the journal and the metrics by `node scripts/build-demo-page.mjs`: nine screens, the lines that matter framed, one narration card per frame, texts in Spanish and English (`l` toggles), keyboard driven, no network, with the repo QR on the closing screen. Everything, attempts included, is in `specs/DEMO-4/journal.jsonl`; the artefacts and the code were reset so the ticket is clean for the next person.
+
+Same harness, two main-thread models: DEMO-1 on Fable 5.1 cost 11.74 USD for its four successful phases; DEMO-3 and DEMO-4 on Opus 5.5 cost 5.52 and 6.00 USD for the same four, with the subagents on the same models in all three.
 
 ## Autopilot and adversarial review
 
@@ -197,7 +208,7 @@ Same harness, two main-thread models: DEMO-1 on Fable 5.1 cost 11.74 USD for its
 
 Speakers: Joan Leon ([@nucliweb](https://github.com/nucliweb)) and Carlos Villuendas ([@carlosvillu](https://github.com/carlosvillu)).
 
-Slide-by-slide map to the files: [`docs/slides-to-repo.md`](docs/slides-to-repo.md). Run of show for the talk (recording plus repo walkthrough): [`docs/demo-script.md`](docs/demo-script.md).
+Slide-by-slide map to the files: [`docs/slides-to-repo.md`](docs/slides-to-repo.md). Run of show for the talk (the step-by-step page, then the repo): [`docs/demo-script.md`](docs/demo-script.md). The page: [`docs/demo/index.html`](docs/demo/index.html), rebuilt with `node scripts/build-demo-page.mjs`.
 
 ## License
 

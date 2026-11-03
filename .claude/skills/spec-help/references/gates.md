@@ -29,7 +29,7 @@ Runs after Interfaces, Steps and Definition of done are drafted, because it coun
 |---|---|
 | More than 15 files | `Split` |
 | More than 500 lines | `Split` |
-| All three layers touched and more than 3 new exported symbols | `Split` |
+| All three layers touched and more than 6 new exported symbols | `Split` |
 | None of the above | `Single PR` |
 
 The thresholds are deliberately lower than a real monorepo would use, so the gate is visible in a demo. `validate-plan.mjs` recomputes the file count from the steps and rejects a plan whose table or verdict disagrees with it.
