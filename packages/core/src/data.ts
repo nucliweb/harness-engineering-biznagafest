@@ -1,7 +1,7 @@
 import type { Catalog, Conference, Room, Speaker, Talk, Track } from './types';
 
 export const conference: Conference = {
-  name: 'Caleta Conf 2026',
+  name: 'Malagueta Conf 2026',
   tagline: 'One day of talks about building for the web',
   date: '2026-11-14',
   venue: 'Palau de la Marea',

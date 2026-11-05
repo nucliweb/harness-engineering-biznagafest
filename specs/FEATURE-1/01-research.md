@@ -49,7 +49,7 @@
 - `apps/agenda/src/routerLink.tsx:4-8` `routerLink: LinkRenderer` adapter over react-router `Link`.
 - `apps/agenda/src/App.test.tsx:3-4` imports `userEvent` from `@testing-library/user-event` and `MemoryRouter` from `react-router`.
 - `apps/agenda/src/App.test.tsx:8-13` `renderAt(path)` helper renders `<App />` inside `<MemoryRouter initialEntries={[path]}>`.
-- `apps/agenda/src/App.test.tsx:16-20` "shows the event name and every talk on /": asserts `Caleta Conf 2026` and `getAllByRole('article')` length equals `talks.length`.
+- `apps/agenda/src/App.test.tsx:16-20` "shows the event name and every talk on /": asserts `Malagueta Conf 2026` and `getAllByRole('article')` length equals `talks.length`.
 - `apps/agenda/src/App.test.tsx:22-25` "/talks/:id" test at `/talks/fast-by-default` asserts level-1 heading `Fast by default`.
 - `apps/agenda/src/App.test.tsx:27-30` unknown talk asserts `Talk not found.`.
 - `apps/agenda/src/App.test.tsx:32-39` navigation test with `userEvent.setup()`, clicks `Fast by default` then `Back to schedule`, asserts `Schedule` heading.

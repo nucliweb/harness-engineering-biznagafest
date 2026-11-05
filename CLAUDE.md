@@ -1,4 +1,4 @@
-# Caleta Agenda
+# Malagueta Agenda
 
 Demo repository for a conference talk about Claude Code harnesses. The app is a deliberately boring conference agenda for a fictional event; the point is the harness around it (`.claude/`), not the app. Contracts for names, formats and schemas live in `docs/contracts.md`; layer conventions live in `.claude/skills/monorepo-conventions` and in each package's `CLAUDE.md`.
 

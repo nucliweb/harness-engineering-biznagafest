@@ -26,7 +26,7 @@ const markedHeadings = () => markedSlots().map((li) => within(li).getByRole('hea
 describe('App routes', () => {
   it('shows the event name and every talk on /', () => {
     renderAt('/');
-    expect(screen.getByRole('banner')).toHaveTextContent('Caleta Conf 2026');
+    expect(screen.getByRole('banner')).toHaveTextContent('Malagueta Conf 2026');
     expect(screen.getAllByRole('article')).toHaveLength(talks.length);
   });
 

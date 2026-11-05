@@ -1,4 +1,4 @@
-# Harness Engineering: Caleta Agenda
+# Harness Engineering: Malagueta Agenda
 
 A runnable example of a spec-driven Claude Code harness: four commands, subagents with clean context, scripts that validate, and a journal that teaches the next run.
 
