@@ -1,6 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm build",
+  "buildCommand": "pnpm build && mkdir -p apps/agenda/dist/demo && cp docs/demo/index.html apps/agenda/dist/demo/index.html",
   "outputDirectory": "apps/agenda/dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/demo", "destination": "/demo/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
