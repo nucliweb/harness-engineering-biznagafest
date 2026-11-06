@@ -24,6 +24,8 @@ node scripts/build-demo-page.mjs
 open docs/demo/index.html
 ```
 
+The same page is served by `pnpm dev` at `http://localhost:5173/demo/`; use whichever is handier, `file://` has no server to start.
+
 - `pnpm test` is green: Vitest for the packages, then `node --test` for the scripts.
 - The page opens from `file://` with no network, in the browser you will use on stage. Press `f` for fullscreen, walk all nine screens with the right arrow once, press `t` to check the theme against the room's projector (light by default; dark if the room is dark), `n` to show the presenter notes strip, `l` to confirm the texts are in Spanish. Scan the QR on the last screen with a phone from the back of the room.
 - `ls specs` shows `FEATURE-1`, `FEATURE-2`, `FEATURE-3` and `FEATURE-4`. `specs/FEATURE-4/` holds only `journal.jsonl`: the ticket was run for the page and then reset. `FIX-1` has no folder at all. Both are clean tickets for a person who clones the repo.
@@ -33,13 +35,13 @@ The morning of: browser zoom at 100 percent, the page open on screen 1 in fullsc
 
 ## Step 1: the page (4 min)
 
-Keys: right arrow or space moves to the next framed line, and to the next screen after the last frame; left arrow goes back; `1` to `9` jump to a screen; `f` fullscreen; `t` theme; `n` presenter notes; `l` switches the texts between Spanish and English (the log, the artefact excerpts and the journal stay in English, as in the repo). The page opens in Spanish when the browser is Spanish; `?lang=es` or `?lang=en` in the URL forces one. A timeline across the top shows the eight steps (clarify, plan, Gate B, implement, validate, journal, numbers, harness): done steps filled, the current one highlighted and filling as its frames go by, the rest dim; click a step to jump to it. The closing screen carries the repo QR, large enough to scan from the room: leave it up during the questions.
+Keys: right arrow or space moves to the next framed line, and to the next screen after the last frame; left arrow goes back; `1` to `9` jump to a screen (nine screens: the intro, the four phases and four extras); `f` fullscreen; `t` theme; `n` presenter notes; `l` switches the texts between Spanish and English (the log, the artefact excerpts and the journal stay in English, as in the repo). The page opens in Spanish when the browser is Spanish; `?lang=es` or `?lang=en` in the URL forces one. A timeline across the top separates what the title promises from what the talk adds. The four phases are numbered 1 to 4 (clarify, plan, implement, validate) and are the "four phases" of the title. Gate B, journal, numbers and harness are extras, drawn smaller and dashed, and labelled "extra" in the corner. Done steps are filled, the current one is highlighted and fills as its frames go by, the rest are dim; click any item to jump to it. The closing screen carries the repo QR, large enough to scan from the room: leave it up during the questions.
 
-Say on screen 1: "This is one ticket going through the four phases with nobody at the keyboard. What you will see is the real log of that run; the frames are ours, the lines are not."
+Say on screen 1: "This is one ticket going through the four phases, and nobody typed anything. That does not mean nobody decided: every decision a person would have taken, headless mode took and wrote in the journal, the design approval included. What you will see is the real log of that run; the frames are ours, the lines are not."
 
 | Screen | What is on it | What to say |
 |---|---|---|
-| 1 | Title, the ticket, total time and cost | Seventeen minutes, six dollars, ticket to GREEN |
+| 1 | Title, the ticket, total time and cost | Four phases, seventeen minutes, six dollars, ticket to GREEN. Point at the numbered 1 to 4 on the timeline |
 | 2 | Clarify | The main thread never searches the repo: the explorer does, on Haiku, in its own context. A script, not a model, says the artefact is valid |
 | 3 | Plan | Three explorers in parallel, closed decisions, then the plan auditor on Opus. Gate B is a table with thresholds |
 | 4 | Gate B interlude | FEATURE-2 was too big: 22 files against 15, the run stopped and asked a person. The gate was set blind and calibrated on three runs |

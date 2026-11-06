@@ -151,18 +151,43 @@ describe('buildPage on the real repo', () => {
     }
   });
 
-  it('renders a timeline with one button per step after the title, in both languages', () => {
+  it('renders a timeline with the four phases numbered and the other screens as extras, in both languages', () => {
     const nav = html.slice(html.indexOf('<nav class="timeline"'), html.indexOf('</nav>'));
     assert.ok(nav.length > 0, 'no timeline nav');
-    const items = nav.match(/<button type="button" class="tl-item"/g) ?? [];
-    assert.equal(items.length, steps.length - 1);
+    assert.equal((nav.match(/class="tl-item tl-phase"/g) ?? []).length, 4);
+    assert.equal((nav.match(/class="tl-item tl-extra/g) ?? []).length, steps.length - 5);
+    assert.deepEqual(
+      [...nav.matchAll(/<span class="tl-num">(\d)<\/span>/g)].map((m) => m[1]),
+      ['1', '2', '3', '4'],
+    );
     steps.forEach((step, i) => {
       if (i === 0) return;
-      assert.ok(nav.includes(`data-go="${i}"`), `no timeline item for step ${i + 1}`);
+      assert.ok(nav.includes(`data-go="${i}"`), `no timeline item for screen ${i + 1}`);
       assert.ok(nav.includes(step.phase.en), `missing en label: ${step.phase.en}`);
       assert.ok(nav.includes(step.phase.es), `missing es label: ${step.phase.es}`);
     });
     assert.ok(!html.includes('id="progress-bar"'), 'the old progress bar is replaced by the timeline');
+  });
+
+  it('numbers only the four phases in the corner label, never "step n / 9"', () => {
+    const corners = [...html.matchAll(/<p class="corner">(.*?)<\/p>/g)].map((m) => m[1].replace(/<[^>]+>/g, ' '));
+    assert.equal(corners.length, steps.length);
+    assert.ok(corners.every((c) => !/\/\s*9\b/.test(c)), 'a corner still counts to 9');
+    assert.equal(corners.filter((c) => /\/\s*4\b/.test(c)).length, 4, 'only the four phase screens carry n / 4');
+  });
+
+  it('does not claim that nobody was involved: it says the decisions are written down, with the real count', () => {
+    assert.ok(!/nobody at the keyboard|nadie al teclado/i.test(html), 'the old overclaim is still there');
+    const title = steps[0].title;
+    assert.match(title.en, /every decision written down/);
+    assert.match(title.es, /cada decisión por escrito/);
+    const stage = steps[0].stage;
+    assert.ok(Number.isInteger(stage.decisions) && stage.decisions > 0, 'no decision count');
+    const journal = readFileSync(join(root, 'specs/FEATURE-4/journal.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+    const castStart = Number(JSON.parse(readFileSync(join(root, 'docs/recordings/headless-feature-4.cast'), 'utf8').split('\n')[0]).timestamp) * 1000;
+    const expected = journal.filter((e) => e.actor === 'headless' && e.kind === 'decision' && Date.parse(e.ts) >= castStart - 5000).length;
+    assert.equal(stage.decisions, expected);
+    assert.ok(html.includes('class="autonomy"'));
   });
 
   it('is deterministic', () => {

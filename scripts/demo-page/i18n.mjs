@@ -7,12 +7,13 @@ export const LANGS = ['es', 'en'];
 export const dict = {
   en: {
     // chrome
-    'ui.step': 'step',
+    'ui.phase': 'phase',
+    'ui.extra': 'extra',
     'ui.timeline': 'run steps',
     'ui.at': 'at {t}',
     'ui.liveLog': 'live log',
     'ui.lines': '{n} lines',
-    'ui.keys': '→ or space next · ← back · 1–9 step · n notes · t theme · l language · f fullscreen',
+    'ui.keys': '→ or space next · ← back · 1–9 screen · n notes · t theme · l language · f fullscreen',
     'ui.numbersFrom': 'numbers from {cast} and {metrics}',
     'ui.attempt': 'attempt {n}',
     'ui.theRecording': 'the recording',
@@ -102,7 +103,8 @@ export const dict = {
     'src.afterImplement': 'specs/FEATURE-1/03-plan.md, after implement',
 
     // step titles and kickers
-    'title.title': 'One ticket, four phases, nobody at the keyboard.',
+    'title.title': 'One ticket, four phases, every decision written down.',
+    'title.autonomy': 'Unattended is not the same as decision-free: headless mode took {n} decisions for you, Gate A included, and wrote each one in the journal.',
     'title.kicker': 'Harness engineering · one real run',
     'clarify.title': 'Phase 1 · Clarify',
     'clarify.kicker': 'The ticket becomes a validated file',
@@ -184,7 +186,7 @@ export const dict = {
     'claim.notFailures': 'Two red lines are grep finding nothing: no unticked step and no new lint suppression.',
     'claim.dod': '04-dod.md is a table of checks and a single verdict line.',
     'claim.skipped': 'Design QA needs a dev server and a browser, so headless skips it and says so in the journal.',
-    'claim.end': 'Ticket to GREEN in {clock} and {usd}, with nobody at the keyboard.',
+    'claim.end': 'Ticket to GREEN in {clock} and {usd}, without typing anything and with the decisions in the journal.',
     'claim.gateStopped': 'FEATURE-2 counted {files} files, Gate B said Split, and the run stopped to ask a person.',
     'claim.calibrated': 'The thresholds were set blind, calibrated on three real runs, and the validator enforces the count.',
     'claim.attemptFinal': 'Attempt {n} is the recording: four phases to GREEN, and {entries} entries, none of them a failure that stopped the run.',
@@ -206,7 +208,7 @@ export const dict = {
     'ev.sameModels': 'Four successful phases each, with the subagents on the same models in all three runs.',
 
     // presenter notes
-    'note.run': 'This is one real, unattended run of FEATURE-4, filter talks by room. Every line on the next screens is a tool call as it happened.',
+    'note.run': 'This is one real run of FEATURE-4, filter talks by room, where nobody typed anything. Every decision a person would have taken was taken by headless mode and written down. Every line on the next screens is a tool call as it happened.',
     'note.ticketFile': 'The ticket is just a file. In a team setup a Jira MCP call replaces this one read, and nothing else changes.',
     'note.cleanContext': 'Everything inside the frame is the explorer working. The main thread only gets the summary on the last line.',
     'note.headlessDecision': '{n} gaps in the ticket, {n} decisions, all written down. A person can audit every one of them later.',
@@ -249,12 +251,13 @@ export const dict = {
   },
 
   es: {
-    'ui.step': 'paso',
+    'ui.phase': 'fase',
+    'ui.extra': 'extra',
     'ui.timeline': 'pasos de la ejecución',
     'ui.at': 'en {t}',
     'ui.liveLog': 'log',
     'ui.lines': '{n} líneas',
-    'ui.keys': '→ o espacio, siguiente · ← atrás · 1–9 paso · n notas · t tema · l idioma · f pantalla completa',
+    'ui.keys': '→ o espacio, siguiente · ← atrás · 1–9 pantalla · n notas · t tema · l idioma · f pantalla completa',
     'ui.numbersFrom': 'cifras de {cast} y {metrics}',
     'ui.attempt': 'intento {n}',
     'ui.theRecording': 'la grabación',
@@ -340,7 +343,8 @@ export const dict = {
     'src.stepFormat': 'docs/contracts.md §4.4, formato de paso',
     'src.afterImplement': 'specs/FEATURE-1/03-plan.md, después de implement',
 
-    'title.title': 'Un ticket, cuatro fases, nadie al teclado.',
+    'title.title': 'Un ticket, cuatro fases, cada decisión por escrito.',
+    'title.autonomy': 'Desatendido no es lo mismo que sin decisiones: el modo headless tomó {n} decisiones por vosotros, el Gate A incluido, y dejó cada una en el journal.',
     'title.kicker': 'Harness engineering · una ejecución real',
     'clarify.title': 'Fase 1 · Clarify',
     'clarify.kicker': 'El ticket se convierte en un fichero validado',
@@ -420,7 +424,7 @@ export const dict = {
     'claim.notFailures': 'Dos líneas rojas son grep sin resultados: ningún paso sin marcar y ninguna supresión de lint nueva.',
     'claim.dod': '04-dod.md: una tabla de comprobaciones y un veredicto.',
     'claim.skipped': 'Design QA necesita un servidor de desarrollo y un navegador. En headless se omite, y el journal lo dice.',
-    'claim.end': 'Del ticket a GREEN en {clock} y por {usd}, sin nadie al teclado.',
+    'claim.end': 'Del ticket a GREEN en {clock} y por {usd}, sin teclear nada y con las decisiones en el journal.',
     'claim.gateStopped': 'FEATURE-2 contó {files} ficheros, Gate B dijo Split y la ejecución se paró para preguntar a una persona.',
     'claim.calibrated': 'Umbrales fijados a ciegas, calibrados en tres ejecuciones; el validador impone el recuento.',
     'claim.attemptFinal': 'El intento {n} es la grabación: cuatro fases hasta GREEN y {entries} entradas, ninguna un fallo que parase la ejecución.',
@@ -440,7 +444,7 @@ export const dict = {
     'ev.mainThread': 'El hilo principal hereda el modelo de la sesión: Opus 5.5 en esta ejecución, Fable 5.1 ({fable}) en FEATURE-1.',
     'ev.sameModels': 'Cuatro fases con éxito en cada caso, con los subagentes en los mismos modelos en las tres.',
 
-    'note.run': 'Esto es una ejecución real de FEATURE-4, filtrar charlas por sala, sin nadie delante. Cada línea que vais a ver es una llamada a una herramienta, tal cual pasó.',
+    'note.run': 'Esto es una ejecución real de FEATURE-4, filtrar charlas por sala, en la que nadie tecleó nada. Cada decisión que habría tomado una persona la tomó el modo headless y la dejó escrita. Cada línea que vais a ver es una llamada a una herramienta, tal cual pasó.',
     'note.ticketFile': 'El ticket es un fichero y ya está. En un equipo sería una llamada al MCP de Jira, y todo lo demás quedaría igual.',
     'note.cleanContext': 'Todo lo que hay dentro del marco lo hace el explorer. Al hilo principal solo le llega el resumen de la última línea.',
     'note.headlessDecision': '{n} huecos en el ticket, {n} decisiones, y todas por escrito. Cualquiera puede revisarlas después.',

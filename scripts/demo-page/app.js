@@ -92,7 +92,14 @@
     section.classList.toggle('closing', Boolean(focus.closing));
     const lang = currentLang();
     const corner = section.querySelector('.corner');
-    if (corner) corner.textContent = `${data.ui.step[lang]} ${cur.s + 1} / ${sections.length} · ${step.phase[lang]}`;
+    if (corner) {
+      corner.textContent =
+        step.kind === 'phase'
+          ? `${data.ui.phase[lang]} ${step.no} / ${step.of} · ${step.phase[lang]}`
+          : step.kind === 'extra'
+            ? `${data.ui.extra[lang]} · ${step.phase[lang]}`
+            : step.phase[lang];
+    }
     scrollToFocus(section);
     renderTimeline(lang);
     notes.innerHTML = '';
@@ -101,7 +108,7 @@
       b.textContent = `${cur.s + 1}.${cur.f + 1} ${focus.label ? focus.label[lang] : ''}`;
       notes.append(b, document.createTextNode(focus.note[lang]));
     }
-    document.title = `${cur.s + 1}/${sections.length} ${step.title[lang]}`;
+    document.title = step.title[lang];
     writeHash();
   }
 

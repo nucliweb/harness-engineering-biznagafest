@@ -216,9 +216,9 @@ function closingView(step, repoUrl, qr) {
 }
 
 function titleStage(step) {
-  const { ticket, numbers, legend, source } = step.stage;
+  const { ticket, numbers, legend, source, autonomy } = step.stage;
   return `<div class="title-stage">
-<div class="hero"><p class="kicker">${tx(step.kicker)}</p><h1 class="hero-title">${step.titleHtml}</h1></div>
+<div class="hero"><p class="kicker">${tx(step.kicker)}</p><h1 class="hero-title">${step.titleHtml}</h1><p class="autonomy">${tx(autonomy)}</p></div>
 <section class="panel ticket"><p class="panel-head">tickets/${esc(ticket.id)}.md</p><div class="item-body"><p class="ticket-id">${esc(ticket.id)}</p><p class="ticket-title">${esc(ticket.title)}</p><p class="ticket-desc">${esc(ticket.description)}</p></div></section>
 <div class="numbers">${numbers.map((n) => `<div><b>${esc(n.value)}</b><span>${tx(n.label)}</span></div>`).join('')}</div>
 <p class="legend">${legend.map(([g, l]) => `<span><b class="gl">${esc(g)}</b> ${tx(l)}</span>`).join('')}</p>
@@ -229,9 +229,15 @@ function titleStage(step) {
 
 // ---------------------------------------------------------------------------------------------------------------
 
-function renderStep(step, i, total, repoUrl, qr) {
+function cornerText(k, phase) {
+  if (k.kind === 'phase') return `${tx(t('ui.phase'))} ${k.no} / ${k.of} · ${tx(phase)}`;
+  if (k.kind === 'extra') return `${tx(t('ui.extra'))} · ${tx(phase)}`;
+  return tx(phase);
+}
+
+function renderStep(step, i, k, repoUrl, qr) {
   const type = step.stage.type;
-  const corner = `<p class="corner">${tx(t('ui.step'))} ${i + 1} / ${total} · ${tx(step.phase)}</p>`;
+  const corner = `<p class="corner">${cornerText(k, step.phase)}</p>`;
   const bar =
     type === 'title'
       ? `<header class="bar">${corner}</header>`
@@ -252,27 +258,46 @@ ${closing}
 
 const plain = (v) => (isLoc(v) ? { en: v.en, es: v.es } : { en: String(v ?? ''), es: String(v ?? '') });
 
-/** The run as a line of steps: every step after the title, the current one highlighted by the navigation script. */
-function renderTimeline(steps) {
+/** What each screen is: the intro, one of the four phases (the only numbered ones), or an extra for the talk. */
+function screenKinds(steps) {
+  const phases = steps.filter((s) => s.stage.type === 'log').length;
+  let n = 0;
+  return steps.map((s, i) => {
+    if (i === 0) return { kind: 'intro', no: 0, of: phases };
+    if (s.stage.type === 'log') return { kind: 'phase', no: ++n, of: phases };
+    return { kind: 'extra', no: 0, of: phases };
+  });
+}
+
+/** The run as a line: the four phases numbered, the other screens as small dashed extras. */
+function renderTimeline(steps, kinds) {
+  let afterRun = false;
   return steps
-    .map((step, i) =>
-      i === 0
-        ? ''
-        : `<button type="button" class="tl-item" data-go="${i}" data-state="todo" tabindex="-1"><span class="tl-seg"><i></i></span><span class="tl-label">${tx(step.phase)}</span></button>`,
-    )
+    .map((step, i) => {
+      const k = kinds[i];
+      if (k.kind === 'intro') return '';
+      if (k.kind === 'extra' && !afterRun && steps[i - 1]?.stage.type === 'log' && steps[i - 1].id === 'validate') afterRun = true;
+      const num = k.kind === 'phase' ? `<span class="tl-num">${k.no}</span>` : '';
+      const cls = k.kind === 'phase' ? 'tl-item tl-phase' : `tl-item tl-extra${afterRun && steps[i - 1].id === 'validate' ? ' tl-break' : ''}`;
+      return `<button type="button" class="${cls}" data-go="${i}" data-state="todo" tabindex="-1"><span class="tl-seg"><i></i></span><span class="tl-label">${num}${tx(step.phase)}</span></button>`;
+    })
     .join('');
 }
 
 /** Fills the template with the rendered steps, the CSS, the JS and the JSON the navigation needs. */
 export function renderPage({ steps, assets, repoUrl }) {
-  const body = steps.map((s, i) => renderStep(s, i, steps.length, repoUrl, assets.qr)).join('\n');
+  const kinds = screenKinds(steps);
+  const body = steps.map((s, i) => renderStep(s, i, kinds[i], repoUrl, assets.qr)).join('\n');
   const data = {
     langs: LANGS,
-    ui: { step: plain(t('ui.step')), timeline: plain(t('ui.timeline')) },
+    ui: { phase: plain(t('ui.phase')), extra: plain(t('ui.extra')), timeline: plain(t('ui.timeline')) },
     steps: steps.map((s) => ({
       id: s.id,
       title: plain(s.title),
       phase: plain(s.phase),
+      kind: kinds[steps.indexOf(s)].kind,
+      no: kinds[steps.indexOf(s)].no,
+      of: kinds[steps.indexOf(s)].of,
       focuses: s.focuses.map((f) => ({ label: plain(f.label), note: plain(f.note), closing: Boolean(f.closing) })),
     })),
   };
@@ -281,7 +306,7 @@ export function renderPage({ steps, assets, repoUrl }) {
     '/*{{CSS}}*/': assets.css.trim(),
     '/*{{JS}}*/': assets.js.trim(),
     '{{BODY}}': body,
-    '{{TIMELINE}}': renderTimeline(steps),
+    '{{TIMELINE}}': renderTimeline(steps, kinds),
     '{{DATA}}': json,
   };
   let html = assets.template;

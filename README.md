@@ -36,7 +36,7 @@ pnpm test
 pnpm dev
 ```
 
-`pnpm test` runs Vitest for the three packages, then `node --test` for the hooks, validators and runner scripts. `pnpm dev` serves the agenda at the URL Vite prints.
+`pnpm test` runs Vitest for the three packages, then `node --test` for the hooks, validators and runner scripts. `pnpm dev` serves the agenda at the URL Vite prints, and the talk page at `/demo/` on the same server (for example `http://localhost:5173/demo/`); the page is served only in dev and is not part of the build.
 
 Open Claude Code in the repo and run the four phases on a fresh ticket. `FEATURE-4` (a feature) and `FIX-1` (a real defect: the tab title never changes) have no artefacts yet; pick either.
 
@@ -176,7 +176,7 @@ FEATURE-4 (filter by room) is the recorded run, `docs/recordings/headless-featur
 | implement | 478.9 s | 2.49 | Opus 5.5, Sonnet 5.5 |
 | validate | 63.3 s | 0.36 | Opus 5.5, Haiku 5.5 |
 
-Seventeen minutes and 6.00 USD from ticket to `GREEN`, with 10 steps across the three layers, 12 subagent runs, 12 validator calls and 6 tool errors the agents recovered from. The run is shown step by step in `docs/demo/index.html`, a single page generated from the recording, the artefacts, the journal and the metrics by `node scripts/build-demo-page.mjs`: nine screens, the lines that matter framed, one narration card per frame, texts in Spanish and English (`l` toggles), a timeline across the top that shows which of the eight steps is current, keyboard driven, no network, with the repo QR on the closing screen. Everything, attempts included, is in `specs/FEATURE-4/journal.jsonl`; the artefacts and the code were reset so the ticket is clean for the next person.
+Seventeen minutes and 6.00 USD from ticket to `GREEN`, with 10 steps across the three layers, 12 subagent runs, 12 validator calls and 6 tool errors the agents recovered from. The run is shown step by step in `docs/demo/index.html`, a single page generated from the recording, the artefacts, the journal and the metrics by `node scripts/build-demo-page.mjs`: nine screens, the lines that matter framed, one narration card per frame, texts in Spanish and English (`l` toggles), a timeline across the top that numbers the four phases and marks Gate B, the journal, the numbers and the harness as extras, keyboard driven, no network, with the repo QR on the closing screen. Everything, attempts included, is in `specs/FEATURE-4/journal.jsonl`; the artefacts and the code were reset so the ticket is clean for the next person.
 
 Same harness, two main-thread models: FEATURE-1 on Fable 5.1 cost 11.74 USD for its four successful phases; FEATURE-3 and FEATURE-4 on Opus 5.5 cost 5.52 and 6.00 USD for the same four, with the subagents on the same models in all three.
 

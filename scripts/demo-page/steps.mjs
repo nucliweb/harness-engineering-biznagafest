@@ -648,6 +648,8 @@ function titleStep(src) {
   const total = src.finalRows.reduce((n, r) => n + r.seconds, 0);
   const cost = src.finalRows.reduce((n, r) => n + r.cost, 0);
   const L = src.lines;
+  const runStart = Number(src.cast.header.timestamp) * 1000;
+  const decisions = src.journal.filter((e) => e.actor === 'headless' && e.kind === 'decision' && Date.parse(e.ts) >= runStart - 5000).length;
   const heading = t('title.title');
   return {
     id: 'title',
@@ -658,6 +660,8 @@ function titleStep(src) {
     stage: {
       type: 'title',
       ticket: { id: src.ticket, title, description },
+      decisions,
+      autonomy: t('title.autonomy', { n: decisions }),
       numbers: [
         { value: fmtClock(total), label: t('num.wallClock') },
         { value: fmtUsd(cost), label: t('num.cost') },
