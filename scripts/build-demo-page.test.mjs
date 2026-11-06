@@ -151,6 +151,20 @@ describe('buildPage on the real repo', () => {
     }
   });
 
+  it('renders a timeline with one button per step after the title, in both languages', () => {
+    const nav = html.slice(html.indexOf('<nav class="timeline"'), html.indexOf('</nav>'));
+    assert.ok(nav.length > 0, 'no timeline nav');
+    const items = nav.match(/<button type="button" class="tl-item"/g) ?? [];
+    assert.equal(items.length, steps.length - 1);
+    steps.forEach((step, i) => {
+      if (i === 0) return;
+      assert.ok(nav.includes(`data-go="${i}"`), `no timeline item for step ${i + 1}`);
+      assert.ok(nav.includes(step.phase.en), `missing en label: ${step.phase.en}`);
+      assert.ok(nav.includes(step.phase.es), `missing es label: ${step.phase.es}`);
+    });
+    assert.ok(!html.includes('id="progress-bar"'), 'the old progress bar is replaced by the timeline');
+  });
+
   it('is deterministic', () => {
     assert.equal(buildPage(root).html, html);
   });

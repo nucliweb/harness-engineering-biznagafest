@@ -8,6 +8,7 @@ export const dict = {
   en: {
     // chrome
     'ui.step': 'step',
+    'ui.timeline': 'run steps',
     'ui.at': 'at {t}',
     'ui.liveLog': 'live log',
     'ui.lines': '{n} lines',
@@ -249,6 +250,7 @@ export const dict = {
 
   es: {
     'ui.step': 'paso',
+    'ui.timeline': 'pasos de la ejecución',
     'ui.at': 'en {t}',
     'ui.liveLog': 'log',
     'ui.lines': '{n} líneas',

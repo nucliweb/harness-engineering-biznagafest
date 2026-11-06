@@ -33,7 +33,7 @@ The morning of: browser zoom at 100 percent, the page open on screen 1 in fullsc
 
 ## Step 1: the page (4 min)
 
-Keys: right arrow or space moves to the next framed line, and to the next screen after the last frame; left arrow goes back; `1` to `9` jump to a screen; `f` fullscreen; `t` theme; `n` presenter notes; `l` switches the texts between Spanish and English (the log, the artefact excerpts and the journal stay in English, as in the repo). The page opens in Spanish when the browser is Spanish; `?lang=es` or `?lang=en` in the URL forces one. The closing screen carries the repo QR, large enough to scan from the room: leave it up during the questions.
+Keys: right arrow or space moves to the next framed line, and to the next screen after the last frame; left arrow goes back; `1` to `9` jump to a screen; `f` fullscreen; `t` theme; `n` presenter notes; `l` switches the texts between Spanish and English (the log, the artefact excerpts and the journal stay in English, as in the repo). The page opens in Spanish when the browser is Spanish; `?lang=es` or `?lang=en` in the URL forces one. A timeline across the top shows the eight steps (clarify, plan, Gate B, implement, validate, journal, numbers, harness): done steps filled, the current one highlighted and filling as its frames go by, the rest dim; click a step to jump to it. The closing screen carries the repo QR, large enough to scan from the room: leave it up during the questions.
 
 Say on screen 1: "This is one ticket going through the four phases with nobody at the keyboard. What you will see is the real log of that run; the frames are ours, the lines are not."
 

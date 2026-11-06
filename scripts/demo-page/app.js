@@ -4,14 +4,9 @@
   const data = JSON.parse(document.getElementById('demo-data').textContent);
   const sections = Array.from(document.querySelectorAll('.step'));
   const notes = document.getElementById('notes');
-  const bar = document.getElementById('progress-bar');
+  const timeline = document.getElementById('timeline');
+  const items = Array.from(timeline.querySelectorAll('.tl-item'));
   const root = document.documentElement;
-  const offsets = [];
-  let totalFocuses = 0;
-  data.steps.forEach((s) => {
-    offsets.push(totalFocuses);
-    totalFocuses += Math.max(1, s.focuses.length);
-  });
 
   let cur = { s: 0, f: 0 };
 
@@ -65,6 +60,20 @@
     scroller.scrollTop = Math.max(0, target);
   }
 
+  /** Marks every step as done, current or to come; the current segment fills as its highlights go by. */
+  function renderTimeline(lang) {
+    timeline.setAttribute('aria-label', data.ui.timeline[lang]);
+    for (const item of items) {
+      const idx = Number(item.dataset.go);
+      const state = idx < cur.s ? 'done' : idx === cur.s ? 'current' : 'todo';
+      item.dataset.state = state;
+      if (state === 'current') item.setAttribute('aria-current', 'step');
+      else item.removeAttribute('aria-current');
+      const fill = state === 'done' ? 100 : state === 'current' ? ((cur.f + 1) / focusCount(cur.s)) * 100 : 0;
+      item.querySelector('i').style.width = `${fill}%`;
+    }
+  }
+
   function render() {
     const step = data.steps[cur.s];
     const focus = step.focuses[cur.f] ?? { note: '' };
@@ -85,8 +94,7 @@
     const corner = section.querySelector('.corner');
     if (corner) corner.textContent = `${data.ui.step[lang]} ${cur.s + 1} / ${sections.length} · ${step.phase[lang]}`;
     scrollToFocus(section);
-    const done = offsets[cur.s] + cur.f + 1;
-    bar.style.width = `${(done / totalFocuses) * 100}%`;
+    renderTimeline(lang);
     notes.innerHTML = '';
     if (focus.note && focus.note[lang]) {
       const b = document.createElement('b');
@@ -164,6 +172,13 @@
     else if (key === 'f') toggleFullscreen();
     else return;
     e.preventDefault();
+  });
+
+  timeline.addEventListener('click', (e) => {
+    const item = e.target.closest('.tl-item');
+    if (!item) return;
+    item.blur();
+    go(Number(item.dataset.go), 0);
   });
 
   document.addEventListener('click', (e) => {

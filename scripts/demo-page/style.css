@@ -59,13 +59,36 @@ body {
 p, h1, ul, dl, pre, figure { margin: 0; }
 [hidden] { display: none !important; }
 
-.progress { position: fixed; inset: 0 0 auto; height: 4px; background: var(--border-subtle); z-index: 5; }
-#progress-bar { display: block; height: 100%; width: 0; background: var(--text-2); }
+/* ---- timeline: the run as a line of steps; done filled, current highlighted, the rest dim ---- */
+.timeline {
+  position: fixed; inset: 0 0 auto; z-index: 5;
+  display: flex; gap: 0.5rem; align-items: flex-start;
+  padding-top: 0.6vh;
+  padding-left: max(2.6vw, 16px, env(safe-area-inset-left, 0px));
+  padding-right: max(2.6vw, 16px, env(safe-area-inset-right, 0px));
+}
+.tl-item {
+  flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0.15rem;
+  background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: left;
+  font: 500 0.85rem/1.1 var(--mono); letter-spacing: 0.03em; text-transform: uppercase; color: var(--muted);
+}
+.tl-seg { display: block; height: 4px; border-radius: 3px; background: var(--border-subtle); overflow: hidden; }
+.tl-seg i { display: block; height: 100%; width: 0; background: var(--text-2); }
+.tl-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-item[data-state="done"] { color: var(--text-2); }
+.tl-item[data-state="done"] .tl-seg i { width: 100%; }
+.tl-item[data-state="current"] { color: var(--accent); font-weight: 700; }
+.tl-item[data-state="current"] .tl-seg { height: 6px; margin-top: -1px; background: color-mix(in srgb, var(--accent) 22%, var(--border-subtle)); }
+.tl-item[data-state="current"] .tl-seg i { background: var(--accent); }
+.tl-item:focus-visible { outline: 1.5px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+@media (max-width: 900px) {
+  .tl-item:not([data-state="current"]) .tl-label { display: none; }
+}
 
 .step {
   position: absolute; inset: 0;
-  display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 1.4vh;
-  padding-block: 3vh 2.6vh;
+  display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 1.1vh;
+  padding-block: calc(1.55rem + 1.1vh) 1.8vh;
   padding-left: max(2.6vw, 16px, env(safe-area-inset-left, 0px));
   padding-right: max(2.6vw, 16px, env(safe-area-inset-right, 0px));
 }
@@ -121,8 +144,8 @@ p, h1, ul, dl, pre, figure { margin: 0; }
 .cards { min-height: 0; min-width: 0; display: grid; }
 .card {
   background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px;
-  padding: 1rem 1.15rem; min-height: 0; overflow-y: auto;
-  display: flex; flex-direction: column; gap: 0.72rem;
+  padding: 0.8rem 1.1rem; min-height: 0; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 0.55rem;
   animation: appear 120ms ease-out;
 }
 @keyframes appear { from { opacity: 0.2; } to { opacity: 1; } }
@@ -132,12 +155,12 @@ p, h1, ul, dl, pre, figure { margin: 0; }
   border: 1.5px solid var(--text-2); color: var(--text); letter-spacing: 0;
 }
 .eyebrow .at { margin-left: auto; text-transform: none; letter-spacing: 0; }
-.claim { font: 500 1.4rem/1.26 var(--serif); letter-spacing: -0.005em; text-wrap: balance; color: var(--text); }
+.claim { font: 500 1.28rem/1.22 var(--serif); letter-spacing: -0.005em; text-wrap: balance; color: var(--text); }
 .ev { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
 .ev-text { font: 400 0.9rem/1.45 var(--sans); color: var(--text-2); }
 .ev-quote {
   font: 400 0.85rem/1.42 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere;
-  background: var(--sunken); border-radius: 8px; padding: 0.55rem 0.75rem; color: var(--text);
+  background: var(--sunken); border-radius: 8px; padding: 0.45rem 0.7rem; color: var(--text);
 }
 .ev-list { padding-left: 1.1rem; font: 400 0.9rem/1.4 var(--sans); color: var(--text-2); display: grid; gap: 0.15rem; }
 .ev-list.mono { font: 400 0.85rem/1.4 var(--mono); list-style: none; padding-left: 0; gap: 0.35rem; }
@@ -148,7 +171,7 @@ p, h1, ul, dl, pre, figure { margin: 0; }
 .ev-kv dd { margin: 0; color: var(--text); overflow-wrap: anywhere; }
 .ev-stats { flex-direction: row; flex-wrap: wrap; gap: 0.6rem 1.6rem; }
 .ev-stats div, .numbers div, .compare div { display: flex; flex-direction: column; gap: 0.15rem; }
-.ev-stats b { font: 500 1.9rem/1 var(--serif); font-variant-numeric: tabular-nums; }
+.ev-stats b { font: 500 1.7rem/1 var(--serif); font-variant-numeric: tabular-nums; }
 .ev-stats span, .numbers span, .compare span { font: 500 0.85rem/1.25 var(--mono); color: var(--muted); }
 .ev-table, .ntable { border-collapse: separate; border-spacing: 0; width: 100%; font: 400 0.85rem/1.35 var(--mono); font-variant-numeric: tabular-nums; }
 .ev-table th, .ntable th { text-align: left; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--border); padding: 0.2rem 0.7rem 0.2rem 0; }
@@ -258,7 +281,7 @@ p, h1, ul, dl, pre, figure { margin: 0; }
 }
 .notes b { font: 600 0.85rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.05em; margin-right: 0.8rem; opacity: 0.75; }
 
-.notes-on .step { padding-bottom: calc(2.6vh + 3.4rem); }
+.notes-on .step { padding-bottom: calc(1.8vh + 3.4rem); }
 
 @media (prefers-reduced-motion: reduce) { .card { animation: none; } }
 

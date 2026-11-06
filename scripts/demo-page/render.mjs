@@ -252,12 +252,23 @@ ${closing}
 
 const plain = (v) => (isLoc(v) ? { en: v.en, es: v.es } : { en: String(v ?? ''), es: String(v ?? '') });
 
+/** The run as a line of steps: every step after the title, the current one highlighted by the navigation script. */
+function renderTimeline(steps) {
+  return steps
+    .map((step, i) =>
+      i === 0
+        ? ''
+        : `<button type="button" class="tl-item" data-go="${i}" data-state="todo" tabindex="-1"><span class="tl-seg"><i></i></span><span class="tl-label">${tx(step.phase)}</span></button>`,
+    )
+    .join('');
+}
+
 /** Fills the template with the rendered steps, the CSS, the JS and the JSON the navigation needs. */
 export function renderPage({ steps, assets, repoUrl }) {
   const body = steps.map((s, i) => renderStep(s, i, steps.length, repoUrl, assets.qr)).join('\n');
   const data = {
     langs: LANGS,
-    ui: { step: plain(t('ui.step')) },
+    ui: { step: plain(t('ui.step')), timeline: plain(t('ui.timeline')) },
     steps: steps.map((s) => ({
       id: s.id,
       title: plain(s.title),
@@ -270,6 +281,7 @@ export function renderPage({ steps, assets, repoUrl }) {
     '/*{{CSS}}*/': assets.css.trim(),
     '/*{{JS}}*/': assets.js.trim(),
     '{{BODY}}': body,
+    '{{TIMELINE}}': renderTimeline(steps),
     '{{DATA}}': json,
   };
   let html = assets.template;
