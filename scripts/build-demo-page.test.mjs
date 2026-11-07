@@ -139,6 +139,13 @@ describe('buildPage on the real repo', () => {
     assert.equal(withoutDataUris.slice(0, withoutDataUris.indexOf('id="step-9"')).match(/https?:\/\//g), null);
   });
 
+  it('declares an inline icon, so the browser never asks the server for /favicon.ico', () => {
+    const head = html.slice(0, html.indexOf('</head>'));
+    const icons = [...head.matchAll(/<link rel="icon"[^>]*>/g)].map((m) => m[0]);
+    assert.equal(icons.length, 1, 'expected exactly one icon link');
+    assert.match(icons[0], /href="data:image\/svg\+xml;base64,[A-Za-z0-9+/=]+"/);
+  });
+
   it('inlines the QR on the closing screen as a PNG data URI', () => {
     const step9 = html.slice(html.indexOf('id="step-9"'));
     assert.match(step9, /<img class="qr" src="data:image\/png;base64,[A-Za-z0-9+/=]{100,}"/);
