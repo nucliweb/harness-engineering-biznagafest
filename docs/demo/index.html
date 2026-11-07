@@ -317,6 +317,35 @@ p, h1, ul, dl, pre, figure { margin: 0; }
 
 @media (prefers-reduced-motion: reduce) { .card { animation: none; } }
 
+/* ---- touch: a bottom bar replaces the keyboard; only shown where there is no hover and a coarse pointer ---- */
+.touch-nav, .touch-hint { display: none; }
+@media (hover: none) and (pointer: coarse) {
+  .keys { display: none; }
+  .touch-hint { display: block; }
+  .touch-nav {
+    position: fixed; inset: auto 0 0; z-index: 7;
+    display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 0.5rem;
+    padding: 0.5rem max(2.6vw, 16px) calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    background: var(--surface); border-top: 1.5px solid var(--border);
+  }
+  .tn-btn {
+    min-height: 44px; min-width: 44px; padding: 0 0.9rem;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+    font: 500 0.95rem/1 var(--sans); color: var(--text);
+    background: var(--paper); border: 1.5px solid var(--border); border-radius: 10px;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+  }
+  .tn-btn [aria-hidden] { font-size: 1.4rem; line-height: 1; }
+  .tn-btn[data-nav="next"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .tn-btn:disabled { opacity: 0.35; }
+  .tn-lang { font: 500 0.8rem/1.1 var(--mono); padding: 0 0.6rem; }
+  .tn-pos { justify-self: center; font: 500 0.85rem/1 var(--mono); color: var(--text-2); font-variant-numeric: tabular-nums; }
+  body { padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (hover: none) and (pointer: coarse) and (max-width: 400px) {
+  .tn-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+
 /* phone and narrow windows: stack and scroll */
 @media (max-width: 760px) {
   html { font-size: 16px; }
@@ -345,6 +374,7 @@ p, h1, ul, dl, pre, figure { margin: 0; }
 <p class="legend"><span><b class="gl">▶</b> <span class="i18n" lang="es">llamada a herramienta</span><span class="i18n" lang="en">tool call</span></span><span><b class="gl">✓</b> <span class="i18n" lang="es">resultado</span><span class="i18n" lang="en">result</span></span><span><b class="gl">✗</b> error</span><span><b class="gl">·</b> <span class="i18n" lang="es">lo que dice el modelo</span><span class="i18n" lang="en">what the model says</span></span><span><b class="gl">■</b> <span class="i18n" lang="es">total de la fase</span><span class="i18n" lang="en">phase total</span></span></p>
 <p class="src keys"><span class="i18n" lang="es">cifras de docs/recordings/headless-feature-4.cast y docs/run-metrics.md</span><span class="i18n" lang="en">numbers from docs/recordings/headless-feature-4.cast and docs/run-metrics.md</span></p>
 <p class="src keys"><span class="i18n" lang="es">→ o espacio, siguiente · ← atrás · 1–9 pantalla · n notas · t tema · l idioma · f pantalla completa</span><span class="i18n" lang="en">→ or space next · ← back · 1–9 screen · n notes · t theme · l language · f fullscreen</span></p>
+<p class="src touch-hint"><span class="i18n" lang="es">Desliza a los lados o usa las flechas de abajo para recorrer la ejecución.</span><span class="i18n" lang="en">Swipe sideways or use the arrows at the bottom to move through the run.</span></p>
 </div>
 
 </section>
@@ -1130,6 +1160,10 @@ p, h1, ul, dl, pre, figure { margin: 0; }
 </div>
 </section>
 </main>
+<nav class="touch-nav" id="touch-nav"><button type="button" class="tn-btn" data-nav="prev"><span aria-hidden="true">‹</span><span class="tn-label"><span class="i18n" lang="es">Atrás</span><span class="i18n" lang="en">Back</span></span></button>
+<span class="tn-pos" aria-live="polite"></span>
+<button type="button" class="tn-btn tn-lang" data-nav="lang"><span class="i18n" lang="es">View in English</span><span class="i18n" lang="en">Ver en español</span></button>
+<button type="button" class="tn-btn" data-nav="next"><span class="tn-label"><span class="i18n" lang="es">Siguiente</span><span class="i18n" lang="en">Next</span></span><span aria-hidden="true">›</span></button></nav>
 <div id="notes" class="notes" hidden></div>
 <script type="application/json" id="demo-data">{"langs":["es","en"],"ui":{"phase":{"en":"phase","es":"fase"},"extra":{"en":"extra","es":"extra"},"timeline":{"en":"run steps","es":"pasos de la ejecución"}},"steps":[{"id":"title","title":{"en":"One ticket, four phases, every decision written down.","es":"Un ticket, cuatro fases, cada decisión por escrito."},"phase":{"en":"intro","es":"intro"},"kind":"intro","no":0,"of":4,"focuses":[{"label":{"en":"the run","es":"la ejecución"},"note":{"en":"This is one real run of FEATURE-4, filter talks by room, where nobody typed anything. Every decision a person would have taken was taken by headless mode and written down. Every line on the next screens is a tool call as it happened.","es":"Esto es una ejecución real de FEATURE-4, filtrar charlas por sala, en la que nadie tecleó nada. Cada decisión que habría tomado una persona la tomó el modo headless y la dejó escrita. Cada línea que vais a ver es una llamada a una herramienta, tal cual pasó."},"closing":false}]},{"id":"clarify","title":{"en":"Phase 1 · Clarify","es":"Fase 1 · Clarify"},"phase":{"en":"clarify","es":"clarify"},"kind":"phase","no":1,"of":4,"focuses":[{"label":{"en":"clean context","es":"contexto limpio"},"note":{"en":"Everything inside the frame is the explorer working. The main thread only gets the summary on the last line.","es":"Todo lo que hay dentro del marco lo hace el explorer. Al hilo principal solo le llega el resumen de la última línea."},"closing":false},{"label":{"en":"headless decision","es":"decisión headless"},"note":{"en":"4 gaps in the ticket, 4 decisions, all written down. A person can audit every one of them later.","es":"4 huecos en el ticket, 4 decisiones, y todas por escrito. Cualquiera puede revisarlas después."},"closing":false},{"label":{"en":"artefact written","es":"artefacto escrito"},"note":{"en":"Same six headings on every ticket. That predictability is what lets a script check the file.","es":"Los mismos seis encabezados en todos los tickets. Por eso un script puede comprobar el fichero."},"closing":false},{"label":{"en":"script decides","es":"decide un script"},"note":{"en":"One open question left and the validator fails; the phase cannot end on prose.","es":"Si queda una sola pregunta abierta, el validador falla y la fase no puede cerrarse con un texto bonito."},"closing":false},{"label":{"en":"phase total","es":"total de fase"},"note":{"en":"About a minute and under a dollar, and the plan starts from a validated input.","es":"Algo más de un minuto, menos de un dólar, y el plan arranca de una entrada validada."},"closing":false}]},{"id":"plan","title":{"en":"Phase 2 · Plan","es":"Fase 2 · Plan"},"phase":{"en":"plan","es":"plan"},"kind":"phase","no":2,"of":4,"focuses":[{"label":{"en":"parallel search","es":"búsqueda paralela"},"note":{"en":"Core, ui and agenda, searched at the same time. The main thread waits for three short answers, not three hundred lines.","es":"Core, ui y agenda, a la vez. El hilo principal espera tres respuestas cortas, no trescientas líneas."},"closing":false},{"label":{"en":"design validated","es":"diseño validado"},"note":{"en":"No TBD, no decision left open. Otherwise the validator rejects the design and the phase cannot go on.","es":"Ni un TBD, ni una decisión abierta. Si no, el validador rechaza el diseño y la fase no sigue."},"closing":false},{"label":{"en":"gate A","es":"Gate A"},"note":{"en":"Interactive, a person stops here. Headless, the journal says it plainly: approved without review.","es":"En interactivo aquí se para una persona. En headless el journal lo dice claro: aprobado sin revisar."},"closing":false},{"label":{"en":"scope check","es":"control de alcance"},"note":{"en":"Ten files, about four hundred lines, four exports. Under every threshold, so it stays one PR.","es":"Diez ficheros, unas cuatrocientas líneas, cuatro exports. Por debajo de todos los umbrales: un solo PR."},"closing":false},{"label":{"en":"second opinion","es":"segunda opinión"},"note":{"en":"A different model judges the plan. Here it passed on the first iteration; FEATURE-1 needed three.","es":"El plan lo juzga otro modelo. Aquí pasó a la primera; FEATURE-1 necesitó tres vueltas."},"closing":false},{"label":{"en":"plan validated","es":"plan validado"},"note":{"en":"One file per step, pseudocode per step. The script refuses a step without a path.","es":"Un fichero por paso y pseudocódigo en cada uno. El script rechaza cualquier paso sin ruta."},"closing":false},{"label":{"en":"phase total","es":"total de fase"},"note":{"en":"Seven minutes of planning, so that implementing is mostly typing.","es":"Siete minutos planificando, para que implementar sea casi teclear."},"closing":false}]},{"id":"gate-b","title":{"en":"Gate B · When the plan is too big","es":"Gate B · Cuando el plan es demasiado grande"},"phase":{"en":"gate B","es":"Gate B"},"kind":"extra","no":0,"of":4,"focuses":[{"label":{"en":"gate stopped","es":"Gate B frena"},"note":{"en":"The agent did not squeeze the design to fit. It stopped, and it proposed three smaller tickets.","es":"El agente no apretó el diseño para que cupiera. Se paró y propuso tres tickets más pequeños."},"closing":false},{"label":{"en":"calibrated gate","es":"umbral calibrado"},"note":{"en":"FEATURE-2 was blocked against the first thresholds, ten files. They moved to fifteen after real runs, and it still splits.","es":"FEATURE-2 se bloqueó con los primeros umbrales, diez ficheros. Tras ejecuciones reales subieron a quince, y sigue sin caber."},"closing":false}]},{"id":"implement","title":{"en":"Phase 3 · Implement","es":"Fase 3 · Implement"},"phase":{"en":"implement","es":"implement"},"kind":"phase","no":3,"of":4,"focuses":[{"label":{"en":"friction","es":"fricción"},"note":{"en":"This red line is friction. Friction is what the journal is for; green on the first try is not recorded.","es":"Esta línea roja es fricción. Para eso está el journal: lo que sale verde a la primera no se apunta."},"closing":false},{"label":{"en":"one layer","es":"una capa"},"note":{"en":"Tests first, then the code, then lint, typecheck and tests for this package only. It cannot touch another layer.","es":"Primero los tests, luego el código, y después lint, typecheck y tests de este paquete. No puede tocar otra capa."},"closing":false},{"label":{"en":"resumable state","es":"estado reanudable"},"note":{"en":"If the run dies here, the next run reads the ticks and carries on from the first empty box.","es":"Si la ejecución se cae aquí, la siguiente lee las marcas y sigue desde la primera casilla vacía."},"closing":false},{"label":{"en":"different model","es":"otro modelo"},"note":{"en":"The reviewer only reads. It can block a layer, but it cannot edit a line.","es":"El reviewer solo lee. Puede bloquear una capa, pero no puede tocar ni una línea."},"closing":false},{"label":{"en":"second layer","es":"segunda capa"},"note":{"en":"Never in parallel: ui builds on what the layer below just exported.","es":"Nunca en paralelo: ui se apoya en lo que la capa de abajo acaba de exportar."},"closing":false},{"label":{"en":"third layer","es":"tercera capa"},"note":{"en":"No blocker, one note: a keyboard criterion with no test. It goes to the journal, and from there to the retro.","es":"Ningún bloqueo y una nota: un criterio de teclado sin test. Va al journal, y de ahí a la retro."},"closing":false},{"label":{"en":"phase total","es":"total de fase"},"note":{"en":"Three layers, six subagent runs, one after the other, and nobody typed a line.","es":"Tres capas, seis subagentes, uno detrás de otro, y nadie ha escrito una línea."},"closing":false}]},{"id":"validate","title":{"en":"Phase 4 · Validate","es":"Fase 4 · Validate"},"phase":{"en":"validate","es":"validate"},"kind":"phase","no":4,"of":4,"focuses":[{"label":{"en":"no opinion","es":"sin opinión"},"note":{"en":"The cheapest model, on purpose: nothing in this phase needs judgement.","es":"El modelo más barato, a propósito: en esta fase no hace falta criterio."},"closing":false},{"label":{"en":"root scripts","es":"scripts de la raíz"},"note":{"en":"Four commands, four results, copied into the file as they came out.","es":"Cuatro comandos, cuatro resultados, copiados al fichero tal como salieron."},"closing":false},{"label":{"en":"not failures","es":"no son fallos"},"note":{"en":"Read the crosses carefully: grep exits 1 when nothing matches. Here, that is the good news.","es":"Ojo con las cruces: grep devuelve 1 cuando no encuentra nada. Aquí es una buena noticia."},"closing":false},{"label":{"en":"definition of done","es":"definition of done"},"note":{"en":"GREEN, RED, or GREEN WITH SUPPRESSIONS. No other verdict exists.","es":"GREEN, RED o GREEN WITH SUPPRESSIONS. No hay más veredictos."},"closing":false},{"label":{"en":"skipped, logged","es":"omitido y anotado"},"note":{"en":"Skipping a check is allowed. Skipping it silently is not.","es":"Saltarse una comprobación se puede. Saltársela sin decirlo, no."},"closing":false},{"label":{"en":"the end","es":"el final"},"note":{"en":"Seventeen and a half minutes, six dollars. Every number comes from the run itself, not from an estimate.","es":"Diecisiete minutos y medio, seis dólares. Todas las cifras salen de la ejecución, no de una estimación."},"closing":false}]},{"id":"journal","title":{"en":"The journal","es":"El journal"},"phase":{"en":"journal","es":"journal"},"kind":"extra","no":0,"of":4,"focuses":[{"label":{"en":"attempt 1","es":"intento 1"},"note":{"en":"First attempt: the gate split on four exports against three. A person moved the threshold, wrote why, and re-ran.","es":"Primer intento: Gate B dividió por cuatro exports contra tres. Una persona movió el umbral, explicó por qué y lo relanzó."},"closing":false},{"label":{"en":"attempt 2","es":"intento 2"},"note":{"en":"Second attempt: RED. The test bug was ours, in the runner tests. The harness refused to call it green.","es":"Segundo intento: RED. El bug era nuestro, en los tests del runner. El harness no quiso darlo por verde."},"closing":false},{"label":{"en":"attempt 3","es":"intento 3"},"note":{"en":"This is the run you just watched. Its seven lines are the decisions and the one reviewer note.","es":"Esta es la ejecución que acabáis de ver. Sus siete líneas son las decisiones y la nota del reviewer."},"closing":false},{"label":{"en":"lessons loop","es":"bucle de lecciones"},"note":{"en":"Framed: the friction rows, the only kinds that become lessons. Plan and implement both read lessons.json in this run.","es":"En el marco, las filas de fricción, las únicas que acaban en lecciones. Plan e implement leen lessons.json en esta ejecución."},"closing":false}]},{"id":"numbers","title":{"en":"The numbers","es":"Las cifras"},"phase":{"en":"numbers","es":"cifras"},"kind":"extra","no":0,"of":4,"focuses":[{"label":{"en":"per phase","es":"por fase"},"note":{"en":"Where does the money go? Planning and implementing. Clarify and validate together cost under a dollar.","es":"¿Dónde se va el dinero? En planificar e implementar. Clarify y validate juntas no llegan a un dólar."},"closing":false},{"label":{"en":"right model","es":"modelo adecuado"},"note":{"en":"One agent per job. The cheapest model wherever no judgement is needed, the strongest wherever it is.","es":"Un agente por tarea. El modelo más barato donde no hace falta criterio, el más potente donde sí."},"closing":false},{"label":{"en":"same harness","es":"mismo harness"},"note":{"en":"Half the cost for the same four phases. The harness did not change; only the model on the main thread did.","es":"La mitad de coste para las mismas cuatro fases. El harness no cambió; solo cambió el modelo del hilo principal."},"closing":false}]},{"id":"harness","title":{"en":"The harness","es":"El harness"},"phase":{"en":"harness","es":"harness"},"kind":"extra","no":0,"of":4,"focuses":[{"label":{"en":"lesson 1","es":"lección 1"},"note":{"en":"Lesson one: predictable code makes a reliable agent. Three layers, boundary rules in ESLint, and a CLAUDE.md per package.","es":"Primera lección: un código predecible hace un agente fiable. Tres capas, reglas de frontera en ESLint y un CLAUDE.md por paquete."},"closing":false},{"label":{"en":"lesson 2","es":"lección 2"},"note":{"en":"Lesson two: every piece in its place. One agent per job, each with its own model, tools and effort.","es":"Segunda lección: cada pieza en su sitio. Un agente por tarea, cada uno con su modelo, sus herramientas y su esfuerzo."},"closing":false},{"label":{"en":"lesson 3","es":"lección 3"},"note":{"en":"Lesson three: validate with scripts, not with models. Validators, hooks and the journal writer have no model call, and have tests.","es":"Tercera lección: valida con scripts, no con modelos. Validadores, hooks y el escritor del journal no llaman a ningún modelo, y tienen tests."},"closing":false},{"label":{"en":"the repo","es":"el repo"},"note":{"en":"Everything on this page is in the repo: the run, the journal, the numbers. Clone it and run FEATURE-4 yourselves.","es":"Todo lo de esta página está en el repo: la ejecución, el journal y las cifras. Clonadlo y lanzad FEATURE-4 vosotros mismos."},"closing":true}]}]}</script>
 <script>
@@ -1142,6 +1176,11 @@ p, h1, ul, dl, pre, figure { margin: 0; }
   const timeline = document.getElementById('timeline');
   const items = Array.from(timeline.querySelectorAll('.tl-item'));
   const root = document.documentElement;
+  const touchNav = document.getElementById('touch-nav');
+  const touchPos = touchNav.querySelector('.tn-pos');
+  const touchPrev = touchNav.querySelector('[data-nav="prev"]');
+  const touchNext = touchNav.querySelector('[data-nav="next"]');
+  const coarse = window.matchMedia('(hover: none) and (pointer: coarse)');
 
   let cur = { s: 0, f: 0 };
 
@@ -1244,13 +1283,19 @@ p, h1, ul, dl, pre, figure { margin: 0; }
       notes.append(b, document.createTextNode(focus.note[lang]));
     }
     document.title = step.title[lang];
+    touchPos.textContent = `${cur.s + 1}/${sections.length} · ${cur.f + 1}/${focusCount(cur.s)}`;
+    touchPrev.disabled = cur.s === 0 && cur.f === 0;
+    touchNext.disabled = cur.s === sections.length - 1 && cur.f === focusCount(cur.s) - 1;
     writeHash();
   }
 
   function go(s, f = 0) {
+    const from = cur.s;
     cur = { s: Math.min(Math.max(s, 0), sections.length - 1), f: 0 };
     cur.f = f === 'last' ? focusCount(cur.s) - 1 : Math.min(Math.max(f, 0), focusCount(cur.s) - 1);
     render();
+    // On narrow screens the page scrolls; a new screen starts at its top, not where the last one was left.
+    if (cur.s !== from) window.scrollTo(0, 0);
   }
 
   function next() {
@@ -1323,7 +1368,39 @@ p, h1, ul, dl, pre, figure { margin: 0; }
     go(Number(item.dataset.go), 0);
   });
 
+  touchNav.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-nav]')?.dataset.nav;
+    if (action === 'prev') prev();
+    else if (action === 'next') next();
+    else if (action === 'lang') toggleLang();
+  });
+
+  // Swipe: a clearly horizontal gesture moves; anything mostly vertical is left to scrolling.
+  let touchStart = null;
+  document.addEventListener(
+    'touchstart',
+    (e) => {
+      touchStart = e.touches.length === 1 && !e.target.closest('#touch-nav') ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+    },
+    { passive: true },
+  );
+  document.addEventListener(
+    'touchend',
+    (e) => {
+      if (!touchStart) return;
+      const dx = e.changedTouches[0].clientX - touchStart.x;
+      const dy = e.changedTouches[0].clientY - touchStart.y;
+      touchStart = null;
+      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      if (dx < 0) next();
+      else prev();
+    },
+    { passive: true },
+  );
+
   document.addEventListener('click', (e) => {
+    // On touch screens a stray tap while reading must not jump; the bottom bar and swipes move instead.
+    if (coarse.matches) return;
     if (e.target.closest('a, button')) return;
     if (String(window.getSelection?.() ?? '') !== '') return;
     if (e.clientX >= window.innerWidth / 2) next();

@@ -169,6 +169,27 @@ describe('buildPage on the real repo', () => {
     assert.ok(!html.includes('id="progress-bar"'), 'the old progress bar is replaced by the timeline');
   });
 
+  it('renders a touch navigation bar with back, next and language buttons, labelled in both languages', () => {
+    const start = html.indexOf('<nav class="touch-nav"');
+    assert.ok(start > 0, 'no touch nav');
+    const nav = html.slice(start, html.indexOf('</nav>', start));
+    for (const action of ['prev', 'next', 'lang']) {
+      assert.match(nav, new RegExp(`<button type="button"[^>]* data-nav="${action}"`), `no ${action} button`);
+    }
+    assert.ok(nav.includes('class="tn-pos"'), 'no position readout');
+    for (const key of ['ui.prev', 'ui.next', 'ui.switchLang']) {
+      const label = t(key);
+      assert.ok(nav.includes(label.en) && nav.includes(label.es), `missing label ${key}`);
+    }
+  });
+
+  it('tells touch users how to move on the title screen, next to the keyboard hint', () => {
+    const step1 = html.slice(html.indexOf('id="step-1"'), html.indexOf('id="step-2"'));
+    const hint = t('ui.touchHint');
+    assert.ok(step1.includes('class="src touch-hint"'), 'no touch hint');
+    assert.ok(step1.includes(hint.en) && step1.includes(hint.es), 'touch hint not in both languages');
+  });
+
   it('numbers only the four phases in the corner label, never "step n / 9"', () => {
     const corners = [...html.matchAll(/<p class="corner">(.*?)<\/p>/g)].map((m) => m[1].replace(/<[^>]+>/g, ' '));
     assert.equal(corners.length, steps.length);

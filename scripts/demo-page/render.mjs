@@ -224,6 +224,7 @@ function titleStage(step) {
 <p class="legend">${legend.map(([g, l]) => `<span><b class="gl">${esc(g)}</b> ${tx(l)}</span>`).join('')}</p>
 <p class="src keys">${tx(source)}</p>
 <p class="src keys">${tx(t('ui.keys'))}</p>
+<p class="src touch-hint">${tx(t('ui.touchHint'))}</p>
 </div>`;
 }
 
@@ -284,6 +285,14 @@ function renderTimeline(steps, kinds) {
     .join('');
 }
 
+/** Bottom bar for touch screens, where the keyboard shortcuts are out of reach. Hidden by CSS elsewhere. */
+function renderTouchNav() {
+  return `<button type="button" class="tn-btn" data-nav="prev"><span aria-hidden="true">‹</span><span class="tn-label">${tx(t('ui.prev'))}</span></button>
+<span class="tn-pos" aria-live="polite"></span>
+<button type="button" class="tn-btn tn-lang" data-nav="lang">${tx(t('ui.switchLang'))}</button>
+<button type="button" class="tn-btn" data-nav="next"><span class="tn-label">${tx(t('ui.next'))}</span><span aria-hidden="true">›</span></button>`;
+}
+
 /** Fills the template with the rendered steps, the CSS, the JS and the JSON the navigation needs. */
 export function renderPage({ steps, assets, repoUrl }) {
   const kinds = screenKinds(steps);
@@ -307,6 +316,7 @@ export function renderPage({ steps, assets, repoUrl }) {
     '/*{{JS}}*/': assets.js.trim(),
     '{{BODY}}': body,
     '{{TIMELINE}}': renderTimeline(steps, kinds),
+    '{{TOUCHNAV}}': renderTouchNav(),
     '{{DATA}}': json,
   };
   let html = assets.template;

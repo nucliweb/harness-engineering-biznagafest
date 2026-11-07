@@ -7,6 +7,11 @@
   const timeline = document.getElementById('timeline');
   const items = Array.from(timeline.querySelectorAll('.tl-item'));
   const root = document.documentElement;
+  const touchNav = document.getElementById('touch-nav');
+  const touchPos = touchNav.querySelector('.tn-pos');
+  const touchPrev = touchNav.querySelector('[data-nav="prev"]');
+  const touchNext = touchNav.querySelector('[data-nav="next"]');
+  const coarse = window.matchMedia('(hover: none) and (pointer: coarse)');
 
   let cur = { s: 0, f: 0 };
 
@@ -109,13 +114,19 @@
       notes.append(b, document.createTextNode(focus.note[lang]));
     }
     document.title = step.title[lang];
+    touchPos.textContent = `${cur.s + 1}/${sections.length} · ${cur.f + 1}/${focusCount(cur.s)}`;
+    touchPrev.disabled = cur.s === 0 && cur.f === 0;
+    touchNext.disabled = cur.s === sections.length - 1 && cur.f === focusCount(cur.s) - 1;
     writeHash();
   }
 
   function go(s, f = 0) {
+    const from = cur.s;
     cur = { s: Math.min(Math.max(s, 0), sections.length - 1), f: 0 };
     cur.f = f === 'last' ? focusCount(cur.s) - 1 : Math.min(Math.max(f, 0), focusCount(cur.s) - 1);
     render();
+    // On narrow screens the page scrolls; a new screen starts at its top, not where the last one was left.
+    if (cur.s !== from) window.scrollTo(0, 0);
   }
 
   function next() {
@@ -188,7 +199,39 @@
     go(Number(item.dataset.go), 0);
   });
 
+  touchNav.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-nav]')?.dataset.nav;
+    if (action === 'prev') prev();
+    else if (action === 'next') next();
+    else if (action === 'lang') toggleLang();
+  });
+
+  // Swipe: a clearly horizontal gesture moves; anything mostly vertical is left to scrolling.
+  let touchStart = null;
+  document.addEventListener(
+    'touchstart',
+    (e) => {
+      touchStart = e.touches.length === 1 && !e.target.closest('#touch-nav') ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+    },
+    { passive: true },
+  );
+  document.addEventListener(
+    'touchend',
+    (e) => {
+      if (!touchStart) return;
+      const dx = e.changedTouches[0].clientX - touchStart.x;
+      const dy = e.changedTouches[0].clientY - touchStart.y;
+      touchStart = null;
+      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      if (dx < 0) next();
+      else prev();
+    },
+    { passive: true },
+  );
+
   document.addEventListener('click', (e) => {
+    // On touch screens a stray tap while reading must not jump; the bottom bar and swipes move instead.
+    if (coarse.matches) return;
     if (e.target.closest('a, button')) return;
     if (String(window.getSelection?.() ?? '') !== '') return;
     if (e.clientX >= window.innerWidth / 2) next();
